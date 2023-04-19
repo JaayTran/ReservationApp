@@ -1,0 +1,13 @@
+{
+  "name": "reservationapp",
+  "version": "1.0.0",
+  "description": "web app for managing client reservations in a restaurant",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd backend && npm run dev",
+    "installdepend": "cd backend && npm install && cd ../frontend && npm install && cd ..",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
