@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 //for create table into db
 
 const reservationSchema = new mongoose.Schema(
@@ -6,10 +6,11 @@ const reservationSchema = new mongoose.Schema(
     name: { type: String, required: true },
     phone: { type: String, required: true },
     email: { type: String, required: true },
+    tableReserved: { type: String, required: true },
 
     start: {
       type: Date,
-      required: [true, 'Please Insert The Start of your event'],
+      required: [true, "Please Insert The Start of your event"],
       min: [new Date(), "can't be before now!!"],
     },
 
@@ -22,15 +23,14 @@ const reservationSchema = new mongoose.Schema(
           const validDate = new Date(date.setHours(date.getHours() + 1));
           return validDate;
         },
-        'Event End must be at least one hour a head of event time',
+        "Event End must be at least one hour a head of event time",
       ],
       default: function () {
         const date = new Date(this.start);
         return date.setDate(date.getDate() + 1);
       },
     },
-
-    describe: { type: String },
+    notes: { type: String },
   },
 
   {
@@ -39,5 +39,5 @@ const reservationSchema = new mongoose.Schema(
   }
 );
 
-const Reservation = mongoose.model('Reservation', reservationSchema);
+const Reservation = mongoose.model("Reservation", reservationSchema);
 export default Reservation;
