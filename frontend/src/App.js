@@ -1,24 +1,16 @@
-import React, { useEffect, useState } from 'react';
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/home/Home';
+import TablesList from './pages/tablesList/TablesList';
+import ReserveTable from './pages/reserveTable/ReserveTable';
 function App() {
-  const [backendData, setBackendData] = useState([{}]);
-
-  useEffect(() => {
-    fetch('/api')
-      .then((response) => response.json())
-      .then((data) => {
-        setBackendData(data);
-      });
-  }, []);
-
   return (
-    <div>
-      {typeof backendData.users === 'undefined' ? (
-        <p>Loading...</p>
-      ) : (
-        backendData.users.map((user, i) => <p ke={i}>{user}</p>)
-      )}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/tables" element={<TablesList />} />
+        <Route path="/tables/:id" element={<ReserveTable />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
