@@ -11,10 +11,11 @@
   color: white;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .logo {
+  font-size: 30px;
   font-weight: 500;
 }
 

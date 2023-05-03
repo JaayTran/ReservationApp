@@ -1,6 +1,11 @@
 .footer {
   width: 100%;
-  width: 1024px;
+  height: 50px;
+  text-align: center;
   font-size: 12px;
-  align-content: center;
+  background-color: #003580;
+  color: white;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }

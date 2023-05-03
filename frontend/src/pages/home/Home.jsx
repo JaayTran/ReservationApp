@@ -1,17 +1,20 @@
 import Footer from '../../components/footer/Footer';
-// import Header from '../../components/header/Header';
+import Header from '../../components/header/Header';
 import Navbar from '../../components/navbar/Navbar';
+import TablesList from '../../components/tablesList/TablesList';
 
 import './home.css';
 
 const Home = () => {
   return (
-    <div>
+    <div className="homeContainer">
       <Navbar />
-      {/* <Header /> */}
-      <div className="homeContainer">
-        <Footer />
+      <Header />
+      <div className="homeContentWrapper">
+        <p> Tables: </p>
+        <TablesList />
       </div>
+      <Footer />
     </div>
   );
 };
