@@ -1,42 +1,30 @@
 import mongoose from "mongoose";
-//for create table into db
+import TableNumber from "./tableModel.js";
+import Contact from "./contactModel.js";
 
 const reservationSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    phone: { type: String, required: true },
-    email: { type: String, required: true },
-    tableReserved: { type: String, required: true },
-
-    start: {
-      type: Date,
-      required: [true, "Please Insert The Start of your event"],
-      min: [new Date(), "can't be before now!!"],
+    tableNumber: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "TableNumber",
+      required: true,
     },
-
-    end: {
-      type: Date,
-      //setting a min function to accept any date one hour ahead of start
-      min: [
-        function () {
-          const date = new Date(this.start);
-          const validDate = new Date(date.setHours(date.getHours() + 1));
-          return validDate;
-        },
-        "Event End must be at least one hour a head of event time",
-      ],
-      default: function () {
-        const date = new Date(this.start);
-        return date.setDate(date.getDate() + 1);
-      },
+    contactInfo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Contact",
+      required: true,
     },
-    notes: { type: String },
+    numPeople: {
+      type: Number,
+      required: true,
+    },
+    comments: {
+      type: String,
+      required: false,
+    },
+    roomNumbers: [{ number: Number, unavailableDates: { type: [Date] } }],
   },
-
-  {
-    //for date
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const Reservation = mongoose.model("Reservation", reservationSchema);

@@ -1,46 +1,66 @@
-import TableNumber from '../models/tableModel.js';
+import TableNumber from "../models/tableModel.js";
+import Reservation from "../models/reservationModel.js";
 
-//for add or fetch
-export const getTableController = async (req, res) => {
+export const createTableController = async (req, res, next) => {
+  const newTableNumber = new TableNumber(req.body);
+
   try {
-    const tables = await TableNumber.find();
-    res.status(200).send(tables);
-  } catch (error) {
-    console.log(error);
+    const savedTableNumber = await newTableNumber.save();
+    res.status(200).json(savedTableNumber);
+  } catch (err) {
+    next(err);
+  }
+};
+export const updateTableController = async (req, res, next) => {
+  try {
+    const updatedTableNumber = await TableNumber.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    res.status(200).json(updatedTableNumber);
+  } catch (err) {
+    next(err);
+  }
+};
+export const deleteTableController = async (req, res, next) => {
+  try {
+    await TableNumber.findByIdAndDelete(req.params.id);
+    res.status(200).json("TableNumber has been deleted.");
+  } catch (err) {
+    next(err);
+  }
+};
+export const getTableController = async (req, res, next) => {
+  try {
+    const tableNumber = await TableNumber.findById(req.params.id);
+    res.status(200).json(tableNumber);
+  } catch (err) {
+    next(err);
+  }
+};
+export const getAllTablesController = async (req, res, next) => {
+  const { min, max, ...others } = req.query;
+  try {
+    const tableNumbers = await TableNumber.find({
+      ...others,
+    }).limit(req.query.limit);
+    res.status(200).json(tableNumbers);
+  } catch (err) {
+    next(err);
   }
 };
 
-//for add
-export const addTableController = async (req, res) => {
+export const getTableReservationController = async (req, res, next) => {
   try {
-    const newTables = new TableNumber(req.body);
-    await newTables.save();
-    res.status(200).send('Table Created Successfully!');
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-//for update
-export const updateTableController = async (req, res) => {
-  try {
-    await TableNumber.findOneAndUpdate({ _id: req.body.tableId }, req.body, {
-      new: true,
-    });
-    res.status(201).json('Table Updated!');
-  } catch (error) {
-    res.status(400).send(error);
-    console.log(error);
-  }
-};
-
-//for delete
-export const deleteTableController = async (req, res) => {
-  try {
-    await TableNumber.findOneAndDelete({ _id: req.body.tableId });
-    res.status(200).json('Table Deleted!');
-  } catch (error) {
-    res.status(400).send(error);
-    console.log(error);
+    const tableNumber = await TableNumber.findById(req.params.id);
+    const list = await Promise.all(
+      tableNumber.reservations.map((reservation) => {
+        return Reservation.findById(reservation);
+      })
+    );
+    res.status(200).json(list);
+  } catch (err) {
+    next(err);
   }
 };

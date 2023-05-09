@@ -1,7 +1,7 @@
 import Reservation from "../models/reservationModel.js";
 
-//for add or fetch
-export const getReservationController = async (req, res) => {
+//for fetch all
+export const getAllReservationController = async (req, res) => {
   try {
     const reservation = await Reservation.find();
     res.status(200).send(reservation);
@@ -10,8 +10,18 @@ export const getReservationController = async (req, res) => {
   }
 };
 
+//fetch specific
+export const getReservationController = async (req, res, next) => {
+  try {
+    const reservation = await Reservation.findById(req.params.id);
+    res.status(200).json(reservation);
+  } catch (err) {
+    next(err);
+  }
+};
+
 //for add
-export const addReservationController = async (req, res) => {
+export const createReservationController = async (req, res) => {
   try {
     const newReservation = new Reservation(req.body);
     await newReservation.save();
@@ -46,5 +56,26 @@ export const deleteReservationController = async (req, res) => {
   } catch (error) {
     res.status(400).send(error);
     console.log(error);
+  }
+};
+
+//for reservation availability
+export const updateReservationAvailabilityController = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    await Reservation.updateOne(
+      { "tableNumbers._id": req.params.id },
+      {
+        $push: {
+          "tableNumbers.$.unavailableDates": req.body.dates,
+        },
+      }
+    );
+    res.status(200).json("Room status has been updated.");
+  } catch (err) {
+    next(err);
   }
 };
