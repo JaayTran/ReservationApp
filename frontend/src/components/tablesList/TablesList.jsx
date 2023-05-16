@@ -1,7 +1,10 @@
-import React from 'react';
-import './tablelist.css';
+import React from "react";
+import "./tablelist.css";
+import useFetch from "../../hooks/useFetch";
 
 const TablesList = () => {
+  const { data, loading, error } = useFetch("/");
+
   return (
     <div className="pList">
       <div className="pListItem">

@@ -11,22 +11,19 @@ import {
 const router = express.Router();
 
 //CREATE RESERVATION
-router.post("/:tableid/:reservationid", createReservationController);
+router.post("/:tableid/", createReservationController);
 
 //UPDATE RESERVATION
-router.put(
-  "/availability/:reservationid",
-  updateReservationAvailabilityController
-);
-router.put("/:tableid/:reservationid", updateReservationController);
+router.put("/availability/:id", updateReservationAvailabilityController);
+router.put("/:id", updateReservationController);
 
 //DELETE RESERVATION
-router.delete("/:tableid/:reservationid", deleteReservationController);
+router.delete("/:id/:tableid", deleteReservationController);
 
 //GET SPECIFIC RESERVATION
-router.get("/:tableid/:reservationid", getReservationController);
+router.get("/:id", getReservationController);
 
 //GET ALL RESERVATIONS
-router.get("/reservations", getAllReservationController);
+router.get("/", getAllReservationController);
 
 export default router;

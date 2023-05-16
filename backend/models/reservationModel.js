@@ -4,14 +4,18 @@ import Contact from "./contactModel.js";
 
 const reservationSchema = new mongoose.Schema(
   {
-    tableNumber: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "TableNumber",
-      required: true,
-    },
-    contactInfo: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Contact",
+    // tableNumber: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "TableNumber",
+    //   required: true,
+    // },
+    // contactInfo: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "Contact",
+    //   required: true,
+    // },
+    tableLocation: {
+      type: String,
       required: true,
     },
     numPeople: {
@@ -22,7 +26,9 @@ const reservationSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    roomNumbers: [{ number: Number, unavailableDates: { type: [Date] } }],
+    availableTableNumbers: [
+      { string: String, unavailableDates: { type: [Date] } },
+    ],
   },
   { timestamps: true }
 );

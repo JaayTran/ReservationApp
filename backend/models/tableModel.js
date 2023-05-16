@@ -2,9 +2,11 @@ import mongoose from "mongoose";
 
 const tableSchema = new mongoose.Schema(
   {
-    tableNum: { type: String, required: true },
-    maxCapacity: { type: String, required: true },
-    isAvailable: { type: String, required: true },
+    tableNum: { type: String, required: true, unique: true },
+    maxCapacity: { type: Number, required: true },
+    reservations: {
+      type: [String],
+    },
   },
   {
     //for date
