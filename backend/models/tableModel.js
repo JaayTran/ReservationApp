@@ -7,6 +7,7 @@ const tableSchema = new mongoose.Schema(
     reservations: {
       type: [String],
     },
+    unavailableDates: [{ string: String, unavailableDates: { type: [Date] } }],
   },
   {
     //for date

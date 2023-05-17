@@ -1,9 +1,9 @@
 import React from 'react';
-import './tableList.css';
+import './RservationsList.css';
 import useFetch from '../../hooks/useFetch';
 
-const TablesList = () => {
-  const { data, loading, error } = useFetch('/tablenumbers');
+const ReservationsList = () => {
+  const { data, loading, error } = useFetch('/reservations');
 
   return (
     <div className="pList">
@@ -19,7 +19,7 @@ const TablesList = () => {
                 className="pListImg"
               />
               <div className="pListTitles">
-                <h1>{data[i]?.tableNum}</h1>
+                <h1>{data[i]?.reservations}</h1>
               </div>
             </div>
           ))}
@@ -29,4 +29,4 @@ const TablesList = () => {
   );
 };
 
-export default TablesList;
+export default ReservationsList;

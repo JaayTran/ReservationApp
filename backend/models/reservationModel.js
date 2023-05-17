@@ -1,23 +1,23 @@
-import mongoose from "mongoose";
-import TableNumber from "./tableModel.js";
-import Contact from "./contactModel.js";
+import mongoose from 'mongoose';
+import TableNumber from './tableModel.js';
+import Contact from './contactModel.js';
 
 const reservationSchema = new mongoose.Schema(
   {
-    // tableNumber: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "TableNumber",
-    //   required: true,
-    // },
+    tableNumber: { type: String },
+    //this will be
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+    email: { type: String, required: true },
     // contactInfo: {
     //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Contact",
+    //   ref: 'Contact',
     //   required: true,
     // },
-    tableLocation: {
-      type: String,
-      required: true,
-    },
+
+    // incorporate soon
+    // startTime: { type: Date, required: true },
+    // endTime: { type: Date, required: true },
     numPeople: {
       type: Number,
       required: true,
@@ -26,12 +26,9 @@ const reservationSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    availableTableNumbers: [
-      { string: String, unavailableDates: { type: [Date] } },
-    ],
   },
   { timestamps: true }
 );
 
-const Reservation = mongoose.model("Reservation", reservationSchema);
+const Reservation = mongoose.model('Reservation', reservationSchema);
 export default Reservation;
