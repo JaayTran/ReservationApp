@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const tableSchema = new mongoose.Schema(
   {
@@ -14,5 +14,5 @@ const tableSchema = new mongoose.Schema(
   }
 );
 
-const TableNumber = mongoose.model("TableNumber", tableSchema);
+const TableNumber = mongoose.model('TableNumber', tableSchema);
 export default TableNumber;

@@ -7,16 +7,16 @@
 }
 
 .pListItem {
+  text-align: center;
   flex: 1;
   border-radius: 10px;
-  overflow: hidden;
   cursor: pointer;
+  overflow: auto;
 }
 
 .pListImg {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
+  height: 200px;
 }
 
 .pListTitles > h1 {

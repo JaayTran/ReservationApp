@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 import {
   createTableController,
   updateTableController,
@@ -6,26 +6,26 @@ import {
   getTableController,
   getAllTablesController,
   getTableReservationController,
-} from "../controllers/tableController.js";
-import TableNumber from "../models/tableModel.js";
+} from '../controllers/tableController.js';
+import TableNumber from '../models/tableModel.js';
 const router = express.Router();
 
 //CREATE
-router.post("/", createTableController);
+router.post('/', createTableController);
 
 //UPDATE
-router.put("/:id", updateTableController);
+router.put('/:id', updateTableController);
 
 //DELETE
-router.delete("/:id", deleteTableController);
+router.delete('/:id', deleteTableController);
 
 //GET SPECIFIC TABLE
-router.get("/find/:id", getTableController);
+router.get('/find/:id', getTableController);
 
 //GET ALL
-router.get("/", getAllTablesController);
+router.get('/', getAllTablesController);
 
 //GET ALL RESERVATIONS FOR SPECIFIC TABLE
-router.get("/reservation/:id", getTableReservationController);
+router.get('/reservation/:id', getTableReservationController);
 
 export default router;

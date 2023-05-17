@@ -1,5 +1,5 @@
-import TableNumber from "../models/tableModel.js";
-import Reservation from "../models/reservationModel.js";
+import TableNumber from '../models/tableModel.js';
+import Reservation from '../models/reservationModel.js';
 
 export const createTableController = async (req, res, next) => {
   const newTableNumber = new TableNumber(req.body);
@@ -26,7 +26,7 @@ export const updateTableController = async (req, res, next) => {
 export const deleteTableController = async (req, res, next) => {
   try {
     await TableNumber.findByIdAndDelete(req.params.id);
-    res.status(200).json("TableNumber has been deleted.");
+    res.status(200).json('TableNumber has been deleted.');
   } catch (err) {
     next(err);
   }
