@@ -16,7 +16,6 @@ const Home = () => {
       <Header />
       {activeView === "tables" && (
         <div className="homeContentWrapper">
-          <p>Tables:</p>
           <TablesList />
         </div>
       )}
