@@ -1,6 +1,6 @@
-import Reservation from "../models/reservationModel.js";
-import TableNumber from "../models/tableModel.js";
-import { createError } from "../utils/error.js";
+import Reservation from '../models/reservationModel.js';
+import TableNumber from '../models/tableModel.js';
+import { createError } from '../utils/error.js';
 
 export const createReservationController = async (req, res, next) => {
   const tableId = req.params.tableid;
@@ -13,7 +13,7 @@ export const createReservationController = async (req, res, next) => {
       const table = await TableNumber.findById(tableId);
       if (!table) {
         // Handle case where table is not found
-        return res.status(404).json({ error: "Table not found" });
+        return res.status(404).json({ error: 'Table not found' });
       }
 
       // Update the reservation with the table number
@@ -54,14 +54,14 @@ export const updateReservationAvailabilityController = async (
 ) => {
   try {
     await Reservation.updateOne(
-      { "availableTableNumbers._id": req.params.id },
+      { 'availableTableNumbers._id': req.params.id },
       {
         $push: {
-          "availableTableNumbers.$.unavailableDates": req.body.dates,
+          'availableTableNumbers.$.unavailableDates': req.body.dates,
         },
       }
     );
-    res.status(200).json("Reservation status has been updated.");
+    res.status(200).json('Reservation status has been updated.');
   } catch (err) {
     next(err);
   }
@@ -69,19 +69,23 @@ export const updateReservationAvailabilityController = async (
 export const deleteReservationController = async (req, res, next) => {
   const tableId = req.params.tableid;
   try {
-    await Reservation.findByIdAndDelete(req.params.id);
-    try {
-      await TableNumber.findByIdAndUpdate(tableId, {
-        $pull: { reservations: req.params.id },
-      });
-    } catch (err) {
-      next(err);
+    const reservation = await Reservation.findById(req.params.id);
+    if (!reservation) {
+      return res.status(404).json({ error: 'Reservation not found' });
     }
-    res.status(200).json("Reservation has been deleted.");
+
+    await Reservation.findByIdAndDelete(req.params.id);
+
+    await TableNumber.findByIdAndUpdate(tableId, {
+      $pull: { reservations: req.params.id },
+    });
+
+    res.status(200).json('Reservation has been deleted.');
   } catch (err) {
     next(err);
   }
 };
+
 export const getReservationController = async (req, res, next) => {
   try {
     const reservation = await Reservation.findById(req.params.id);

@@ -1,5 +1,5 @@
-import TableNumber from "../models/tableModel.js";
-import Reservation from "../models/reservationModel.js";
+import TableNumber from '../models/tableModel.js';
+import Reservation from '../models/reservationModel.js';
 
 export const createTableController = async (req, res, next) => {
   const newTableNumber = new TableNumber(req.body);
@@ -39,7 +39,7 @@ export const deleteTableController = async (req, res, next) => {
 
     res
       .status(200)
-      .json("Table and associated reservations have been deleted.");
+      .json('Table and associated reservations have been deleted.');
   } catch (err) {
     next(err);
   }

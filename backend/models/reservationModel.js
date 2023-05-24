@@ -7,8 +7,8 @@ const reservationSchema = new mongoose.Schema(
     tableNumber: { type: String },
     //this will be
     name: { type: String, required: true },
-    phone: { type: String, required: true },
-    email: { type: String, required: true },
+    phone: { type: String, required: false },
+    email: { type: String, required: false },
     // contactInfo: {
     //   type: mongoose.Schema.Types.ObjectId,
     //   ref: 'Contact',

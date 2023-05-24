@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import TableModal from "../modals/TableModal";
-import ReservationModal from "../modals/ReservationModal";
-import "./tableList.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import TableModal from '../modals/TableModal';
+import ReservationModal from '../modals/ReservationModal';
+import SuccessModal from '../modals/SuccessModal';
+import './tableList.css';
 
 const TableList = () => {
   const [tables, setTables] = useState([]);
@@ -12,11 +13,11 @@ const TableList = () => {
   const [reservationModalOpen, setReservationModalOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
   const [selectedReservation, setSelectedReservation] = useState(null);
-  const [reservationSuccess, setReservationSuccess] = useState(false);
   const [newTableData, setNewTableData] = useState({
-    tableNum: "",
+    tableNum: '',
     maxCapacity: 0,
   });
+  const [reservationSuccess, setReservationSuccess] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -25,10 +26,10 @@ const TableList = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("/tablenumbers/");
+      const res = await axios.get('/tablenumbers/');
       setTables(res.data);
     } catch (error) {
-      setError("An error occurred while fetching tables. Please try again.");
+      setError('An error occurred while fetching tables. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -45,7 +46,7 @@ const TableList = () => {
     } else {
       // If adding a new table, reset the form data to empty values
       setNewTableData({
-        tableNum: "",
+        tableNum: '',
         maxCapacity: 0,
       });
     }
@@ -63,12 +64,12 @@ const TableList = () => {
       if (selectedTable) {
         await axios.put(`/tablenumbers/${selectedTable._id}`, tableData);
       } else {
-        await axios.post("/tablenumbers/", tableData);
+        await axios.post('/tablenumbers/', tableData);
       }
       fetchData();
       handleCloseTableModal();
     } catch (error) {
-      setError("An error occurred. Please try again.");
+      setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -80,7 +81,7 @@ const TableList = () => {
       await axios.delete(`/tablenumbers/${table._id}`);
       fetchData();
     } catch (error) {
-      setError("An error occurred while deleting the table. Please try again.");
+      setError('An error occurred while deleting the table. Please try again.');
     } finally {
       setLoading(false);
       handleCloseTableModal();
@@ -115,13 +116,12 @@ const TableList = () => {
         await axios.post(`/reservations/${tableId}`, reservationData);
       }
       setReservationSuccess(true);
+      fetchData();
     } catch (error) {
-      setError("An error occurred. Please try again.");
+      setError('An error occurred. Please try again.');
       console.log(error);
     } finally {
       setLoading(false);
-      handleCloseReservationModal(); // Close the reservation modal regardless of success or error
-      fetchData();
     }
   };
 
@@ -133,7 +133,7 @@ const TableList = () => {
       handleCloseReservationModal();
     } catch (error) {
       setError(
-        "An error occurred while deleting the reservation. Please try again."
+        'An error occurred while deleting the reservation. Please try again.'
       );
     } finally {
       setLoading(false);
@@ -196,22 +196,10 @@ const TableList = () => {
       />
 
       {/* Success Modal */}
-      {reservationSuccess && (
-        <div>
-          <div
-            className="page-background"
-            onClick={handleCloseSuccessModal}
-          ></div>
-          <div className="modal">
-            <div className="modal-content">
-              <h3>Reservation Successful!</h3>
-              <button className="close" onClick={handleCloseSuccessModal}>
-                X
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SuccessModal
+        isOpen={reservationSuccess}
+        onClose={handleCloseSuccessModal}
+      />
     </div>
   );
 };
