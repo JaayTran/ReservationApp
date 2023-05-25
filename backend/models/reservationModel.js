@@ -1,10 +1,11 @@
-import mongoose from 'mongoose';
-import TableNumber from './tableModel.js';
-import Contact from './contactModel.js';
+import mongoose from "mongoose";
+import TableNumber from "./tableModel.js";
+import Contact from "./contactModel.js";
 
 const reservationSchema = new mongoose.Schema(
   {
     tableNumber: { type: String },
+    tableNumberId: { type: String },
     //this will be
     name: { type: String, required: true },
     phone: { type: String, required: false },
@@ -30,5 +31,5 @@ const reservationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Reservation = mongoose.model('Reservation', reservationSchema);
+const Reservation = mongoose.model("Reservation", reservationSchema);
 export default Reservation;

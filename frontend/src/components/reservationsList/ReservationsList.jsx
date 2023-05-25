@@ -11,7 +11,7 @@ const ReservationList = () => {
     loading,
     error,
     reFetch,
-  } = useFetch("/reservations");
+  } = useFetch("/reservations/");
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
@@ -32,12 +32,13 @@ const ReservationList = () => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          `/reservations/${reservation._id}/${reservation.tableId}`
+          `/reservations/${reservation._id}/${reservation.tableNumberId}`,
+          setSuccessModalOpen(true)
         );
-        reFetch();
-        setSuccessModalOpen(true);
       } catch (error) {
         console.log("An error occurred while deleting the reservation:", error);
+      } finally {
+        reFetch();
       }
     }
   };
