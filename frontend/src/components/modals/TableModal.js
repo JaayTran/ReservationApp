@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
-import './modals.css';
+import React, { useState, useEffect } from "react";
+import Modal from "react-modal";
+import "./modals.css";
 
 const TableModal = ({ isOpen, onClose, onSave, onDelete, table }) => {
-  const [tableNum, setTableNum] = useState('');
-  const [maxCapacity, setMaxCapacity] = useState('');
+  const [tableNum, setTableNum] = useState("");
+  const [maxCapacity, setMaxCapacity] = useState("");
 
   useEffect(() => {
     if (table) {
       setTableNum(table.tableNum);
       setMaxCapacity(table.maxCapacity);
     } else {
-      setTableNum('');
-      setMaxCapacity('');
+      setTableNum("");
+      setMaxCapacity("");
     }
   }, [table]);
 
   useEffect(() => {
     if (!isOpen) {
-      setTableNum('');
-      setMaxCapacity('');
+      setTableNum("");
+      setMaxCapacity("");
     }
   }, [isOpen]);
 
@@ -37,8 +37,8 @@ const TableModal = ({ isOpen, onClose, onSave, onDelete, table }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={handleClose}>
-      <h2>{table ? 'Edit Table' : 'Add Table'}</h2>
+    <Modal isOpen={isOpen} onRequestClose={handleClose} className="modal">
+      <h2>{table ? "Edit Table" : "Add Table"}</h2>
       <form onSubmit={handleSave}>
         <label>
           Table Number:
@@ -60,7 +60,7 @@ const TableModal = ({ isOpen, onClose, onSave, onDelete, table }) => {
           />
         </label>
         <br />
-        <button type="submit">{table ? 'Save' : 'Add'}</button>
+        <button type="submit">{table ? "Save" : "Add"}</button>
         {table && (
           <button type="button" onClick={handleDelete}>
             Delete

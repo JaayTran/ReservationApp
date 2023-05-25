@@ -1,23 +1,22 @@
-import React from 'react';
-import './modals.css';
+import React from "react";
+import Modal from "react-modal";
+import "./modals.css";
 
 const SuccessModal = ({ isOpen, onClose }) => {
-  if (!isOpen) {
-    return null;
-  }
-
   return (
-    <div>
-      <div className="page-background" onClick={onClose}></div>
-      <div className="modal">
-        <div className="modal-content">
-          <h3>Action Successful!</h3>
-          <button className="close" onClick={onClose}>
-            X
-          </button>
-        </div>
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      className="modal"
+      overlayClassName="modal-overlay"
+    >
+      <div className="modal-content">
+        <h3>Action Successful!</h3>
+        <button className="close" onClick={onClose}>
+          X
+        </button>
       </div>
-    </div>
+    </Modal>
   );
 };
 
