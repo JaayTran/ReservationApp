@@ -1,35 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './reservationList.css';
-import useFetch from '../../hooks/useFetch';
-import ReservationModal from '../modals/ReservationModal';
-import SuccessModal from '../modals/SuccessModal';
+import React, { useState, useEffect } from "react";
+import "./reservationList.css";
+import useFetch from "../../hooks/useFetch";
+import ReservationModal from "../modals/ReservationModal";
+import SuccessModal from "../modals/SuccessModal";
+import axios from "axios";
 
 const ReservationList = () => {
-  const [reservations, setReservations] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    data: reservations,
+    loading,
+    error,
+    reFetch,
+  } = useFetch("/reservations");
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
 
   useEffect(() => {
-    fetchData();
+    reFetch();
   }, []);
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get('/reservations/');
-      setReservations(res.data);
-    } catch (error) {
-      setError(
-        'An error occurred while fetching reservations. Please try again.'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleEditReservation = (reservation) => {
     setSelectedReservation(reservation);
@@ -38,20 +27,17 @@ const ReservationList = () => {
 
   const handleDeleteReservation = async (reservation) => {
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this reservation?'
+      "Are you sure you want to delete this reservation?"
     );
     if (confirmDelete) {
       try {
         await axios.delete(
           `/reservations/${reservation._id}/${reservation.tableId}`
         );
-        setReservations((prevReservations) =>
-          prevReservations.filter(
-            (prevReservation) => prevReservation._id !== reservation._id
-          )
-        );
+        reFetch();
+        setSuccessModalOpen(true);
       } catch (error) {
-        console.log('An error occurred while deleting the reservation:', error);
+        console.log("An error occurred while deleting the reservation:", error);
       }
     }
   };
@@ -75,15 +61,9 @@ const ReservationList = () => {
       );
 
       setSuccessModalOpen(true);
-      setReservations((prevReservations) =>
-        prevReservations.map((prevReservation) =>
-          prevReservation._id === selectedReservation._id
-            ? { ...prevReservation, ...updatedReservationData } // Merge the updated reservation data
-            : prevReservation
-        )
-      );
+      reFetch();
     } catch (error) {
-      console.log('An error occurred while updating the reservation:', error);
+      console.log("An error occurred while updating the reservation:", error);
     } finally {
       setIsModalOpen(false);
     }
@@ -92,7 +72,9 @@ const ReservationList = () => {
   return (
     <div className="pList">
       {loading ? (
-        'Loading...'
+        "Loading..."
+      ) : error ? (
+        "An error occurred while fetching reservations. Please try again."
       ) : (
         <>
           {reservations.map((reservation) => (

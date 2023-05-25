@@ -62,7 +62,7 @@ const TableModal = ({ isOpen, onClose, onSave, onDelete, table }) => {
         <br />
         <button type="submit">{table ? "Save" : "Add"}</button>
         {table && (
-          <button type="button" onClick={handleDelete}>
+          <button type="submit" onClick={handleDelete}>
             Delete
           </button>
         )}
