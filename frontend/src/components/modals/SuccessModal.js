@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import "./modals.css";
-
+Modal.setAppElement("#root");
 const SuccessModal = ({ isOpen, onClose }) => {
   return (
     <Modal

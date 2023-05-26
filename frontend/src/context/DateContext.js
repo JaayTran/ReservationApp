@@ -1,7 +1,7 @@
 import { createContext, useReducer } from "react";
 
 const INITIAL_STATE = {
-  dates: [],
+  date: [],
 };
 
 export const DateContext = createContext(INITIAL_STATE);
@@ -23,7 +23,7 @@ export const DateContextProvider = ({ children }) => {
   return (
     <DateContext.Provider
       value={{
-        dates: state.dates,
+        date: state.date,
         dispatch,
       }}
     >

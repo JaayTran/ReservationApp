@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import "./modals.css";
-
+Modal.setAppElement("#root");
 const TableModal = ({ isOpen, onClose, onSave, onDelete, table }) => {
   const [tableNum, setTableNum] = useState("");
   const [maxCapacity, setMaxCapacity] = useState("");

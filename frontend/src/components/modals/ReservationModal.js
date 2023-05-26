@@ -1,37 +1,84 @@
-import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
-
+import React, { useState, useEffect, useContext } from "react";
+import Modal from "react-modal";
+import { DateContext } from "../../context/DateContext";
+Modal.setAppElement("#root");
 const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [numPeople, setNumPeople] = useState('');
-  const [comments, setComments] = useState('');
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [numPeople, setNumPeople] = useState("");
+  const [comments, setComments] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const { date } = useContext(DateContext);
 
   useEffect(() => {
     if (isOpen && reservation) {
-      setName(reservation.name || '');
-      setPhone(reservation.phone || '');
-      setEmail(reservation.email || '');
-      setNumPeople(reservation.numPeople || '');
-      setComments(reservation.comments || '');
+      setName(reservation.name || "");
+      setPhone(reservation.phone || "");
+      setEmail(reservation.email || "");
+      setNumPeople(reservation.numPeople || "");
+      setComments(reservation.comments || "");
+      setStartDate(reservation.startDate || "");
+      setEndDate(reservation.endDate || "");
     }
   }, [isOpen, reservation]);
 
   const handleSave = (e) => {
     e.preventDefault();
-    onSave({ name, phone, email, numPeople, comments });
-    setName('');
-    setPhone('');
-    setEmail('');
-    setNumPeople('');
-    setComments('');
+    onSave({
+      name,
+      phone,
+      email,
+      numPeople,
+      comments,
+      startDate: date.date,
+      endDate: calculateEndDate(date.date),
+    });
+    setName("");
+    setPhone("");
+    setEmail("");
+    setNumPeople("");
+    setComments("");
+    setStartDate("");
+    setEndDate("");
     onClose();
+  };
+
+  const calculateEndDate = (startDate) => {
+    const startDateTime = new Date(startDate);
+    const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000);
+    return endDateTime.toLocaleString();
+  };
+
+  const generateTimeOptions = () => {
+    const startTime = 12 * 60;
+    const endTime = 22 * 60;
+    const interval = 15;
+
+    const options = [];
+    for (let time = startTime; time <= endTime; time += interval) {
+      const hours = Math.floor(time / 60);
+      const minutes = time % 60;
+      const formattedTime = `${padZero(hours)}:${padZero(minutes)}`;
+      options.push(
+        <option key={time} value={formattedTime}>
+          {formattedTime}
+        </option>
+      );
+    }
+
+    return options;
+  };
+
+  const padZero = (num) => {
+    return num.toString().padStart(2, "0");
   };
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} className="modal">
-      <h2>{reservation ? 'Edit Reservation' : 'Add Reservation'}</h2>
+      <h2>{reservation ? "Edit Reservation" : "Add Reservation"}</h2>
       <form onSubmit={handleSave}>
         <label>
           Name:
@@ -79,7 +126,18 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
           />
         </label>
         <br />
-        <button type="submit">{reservation ? 'Save' : 'Add'}</button>
+        <label>
+          Time of Reservation:
+          <select
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          >
+            <option value="">Select Time</option>
+            {generateTimeOptions()}
+          </select>
+        </label>
+        <br />
+        <button type="submit">{reservation ? "Save" : "Add"}</button>
         <button onClick={onClose}>Cancel</button>
       </form>
     </Modal>

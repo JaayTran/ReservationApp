@@ -6,7 +6,6 @@ const reservationSchema = new mongoose.Schema(
   {
     tableNumber: { type: String },
     tableNumberId: { type: String },
-    //this will be
     name: { type: String, required: true },
     phone: { type: String, required: false },
     email: { type: String, required: false },
@@ -17,8 +16,8 @@ const reservationSchema = new mongoose.Schema(
     // },
 
     // incorporate soon
-    // startTime: { type: Date, required: true },
-    // endTime: { type: Date, required: true },
+    startTime: { type: Date, required: false },
+    endTime: { type: Date, required: false },
     numPeople: {
       type: Number,
       required: true,

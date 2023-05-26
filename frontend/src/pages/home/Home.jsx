@@ -7,6 +7,7 @@ import TablesList from "../../components/tablesList/TablesList";
 
 import "./home.css";
 import { ViewContext } from "../../context/ViewContext";
+import { DateContext } from "../../context/DateContext";
 
 const Home = () => {
   const { activeView } = useContext(ViewContext);

@@ -4,6 +4,7 @@ import useFetch from "../../hooks/useFetch";
 import ReservationModal from "../modals/ReservationModal";
 import SuccessModal from "../modals/SuccessModal";
 import axios from "axios";
+import { DateContext } from "../../context/DateContext";
 
 const ReservationList = () => {
   const {
@@ -82,6 +83,8 @@ const ReservationList = () => {
             <div className="pListItem" key={reservation._id}>
               <div className="pListTitles">
                 <h1>Party Size: {reservation.numPeople}</h1>
+                <h1>Start Time: {reservation.startTime}</h1>
+                <h1>End Time: {reservation.endTime}</h1>
                 <h1>Name: {reservation.name}</h1>
                 <h1>Phone: {reservation.phone}</h1>
                 <h1>Email: {reservation.email}</h1>

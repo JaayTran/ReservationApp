@@ -1,7 +1,7 @@
 import { faChair, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./header.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -15,10 +15,12 @@ const Header = () => {
   const [date, setDate] = useState(null);
 
   const { activeView, handleViewChange } = useContext(ViewContext);
-
   const { dispatch } = useContext(DateContext);
+
   const handleDate = () => {
-    dispatch({ type: "NEW_DATE", payload: { date } });
+    if (date) {
+      dispatch({ type: "NEW_DATE", payload: { date: date } });
+    }
   };
 
   return (
@@ -49,10 +51,10 @@ const Header = () => {
               setDate(e.value);
               handleDate();
             }}
-            dateFormat="dd/mm/yy"
-            showButtonBar
+            dateFormat="yy/mm/dd"
+            showButtonBar={true}
+            // minDate={new Date()}
           />
-          <label>Select Date</label>
         </div>
       </div>
     </div>
