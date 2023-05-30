@@ -11,6 +11,8 @@ import { Calendar } from "primereact/calendar";
 import { DateContext } from "../../context/DateContext";
 import { ViewContext } from "../../context/ViewContext";
 
+import { format } from "date-fns";
+
 const Header = () => {
   const [date, setDate] = useState(null);
 
@@ -22,6 +24,10 @@ const Header = () => {
       dispatch({ type: "NEW_DATE", payload: { date: date } });
     }
   };
+
+  useEffect(() => {
+    console.log(date);
+  }, []);
 
   return (
     <div className="header">

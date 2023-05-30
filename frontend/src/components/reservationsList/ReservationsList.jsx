@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./reservationList.css";
 import useFetch from "../../hooks/useFetch";
 import ReservationModal from "../modals/ReservationModal";
 import SuccessModal from "../modals/SuccessModal";
 import axios from "axios";
 import { DateContext } from "../../context/DateContext";
+import format from "date-fns/format";
 
 const ReservationList = () => {
   const {
@@ -82,6 +83,7 @@ const ReservationList = () => {
           {reservations.map((reservation) => (
             <div className="pListItem" key={reservation._id}>
               <div className="pListTitles">
+                <h1>Date: {reservation.reservationDate}</h1>
                 <h1>Party Size: {reservation.numPeople}</h1>
                 <h1>Start Time: {reservation.startTime}</h1>
                 <h1>End Time: {reservation.endTime}</h1>

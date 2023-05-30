@@ -3,6 +3,8 @@ import Modal from "react-modal";
 import { DateContext } from "../../context/DateContext";
 Modal.setAppElement("#root");
 const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
+  const { date } = useContext(DateContext);
+  const [reservationDate, setReservationDate] = useState(date);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -11,10 +13,9 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  const { date } = useContext(DateContext);
-
   useEffect(() => {
     if (isOpen && reservation) {
+      setReservationDate(reservation.date || "");
       setName(reservation.name || "");
       setPhone(reservation.phone || "");
       setEmail(reservation.email || "");
@@ -23,19 +24,21 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
       setStartDate(reservation.startDate || "");
       setEndDate(reservation.endDate || "");
     }
-  }, [isOpen, reservation]);
+  }, [isOpen, reservation, date]);
 
   const handleSave = (e) => {
     e.preventDefault();
     onSave({
+      reservationDate,
       name,
       phone,
       email,
       numPeople,
       comments,
-      startDate: date.date,
-      endDate: calculateEndDate(date.date),
+      startDate,
+      endDate,
     });
+    setReservationDate("");
     setName("");
     setPhone("");
     setEmail("");
