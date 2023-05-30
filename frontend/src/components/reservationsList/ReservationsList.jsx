@@ -6,6 +6,7 @@ import SuccessModal from "../modals/SuccessModal";
 import axios from "axios";
 import { DateContext } from "../../context/DateContext";
 import format from "date-fns/format";
+import { parseISO } from "date-fns";
 
 const ReservationList = () => {
   const {
@@ -83,7 +84,10 @@ const ReservationList = () => {
           {reservations.map((reservation) => (
             <div className="pListItem" key={reservation._id}>
               <div className="pListTitles">
-                <h1>Date: {reservation.reservationDate}</h1>
+                <h1>
+                  Date:{" "}
+                  {format(parseISO(reservation.reservationDate), "yyyy-MM-dd")}
+                </h1>
                 <h1>Party Size: {reservation.numPeople}</h1>
                 <h1>Start Time: {reservation.startTime}</h1>
                 <h1>End Time: {reservation.endTime}</h1>

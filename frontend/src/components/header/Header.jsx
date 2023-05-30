@@ -11,23 +11,21 @@ import { Calendar } from "primereact/calendar";
 import { DateContext } from "../../context/DateContext";
 import { ViewContext } from "../../context/ViewContext";
 
-import { format } from "date-fns";
-
 const Header = () => {
   const [date, setDate] = useState(null);
 
   const { activeView, handleViewChange } = useContext(ViewContext);
   const { dispatch } = useContext(DateContext);
 
-  const handleDate = () => {
-    if (date) {
-      dispatch({ type: "NEW_DATE", payload: { date: date } });
+  const handleDateChange = (e) => {
+    const selectedDate = e.value;
+    setDate(selectedDate);
+
+    if (selectedDate) {
+      console.log("Selected Date:", selectedDate);
+      dispatch({ type: "NEW_DATE", payload: { date: selectedDate } });
     }
   };
-
-  useEffect(() => {
-    console.log(date);
-  }, []);
 
   return (
     <div className="header">
@@ -53,10 +51,7 @@ const Header = () => {
         <div className="p-float-label">
           <Calendar
             value={date}
-            onChange={(e) => {
-              setDate(e.value);
-              handleDate();
-            }}
+            onChange={handleDateChange}
             dateFormat="yy/mm/dd"
             showButtonBar={true}
             // minDate={new Date()}

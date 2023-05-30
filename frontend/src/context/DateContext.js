@@ -1,7 +1,7 @@
 import { createContext, useReducer } from "react";
 
 const INITIAL_STATE = {
-  date: [],
+  date: null,
 };
 
 export const DateContext = createContext(INITIAL_STATE);
@@ -9,7 +9,13 @@ export const DateContext = createContext(INITIAL_STATE);
 const DateReducer = (state, action) => {
   switch (action.type) {
     case "NEW_DATE":
-      return action.payload;
+      console.log("Dispatched Date:", action.payload.date);
+      const newState = {
+        ...state,
+        date: action.payload.date,
+      };
+      console.log("Updated State:", newState);
+      return newState;
     case "RESET_DATE":
       return INITIAL_STATE;
     default:
