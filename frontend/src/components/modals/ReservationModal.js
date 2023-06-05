@@ -4,7 +4,7 @@ import { DateContext } from "../../context/DateContext";
 Modal.setAppElement("#root");
 
 const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
-  const { date } = useContext(DateContext);
+  const { date: contextDate } = useContext(DateContext);
   const [reservationDate, setReservationDate] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -12,7 +12,6 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
   const [numPeople, setNumPeople] = useState("");
   const [comments, setComments] = useState("");
   const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
 
   useEffect(() => {
     if (isOpen && reservation) {
@@ -23,52 +22,33 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
       setNumPeople(reservation.numPeople || "");
       setComments(reservation.comments || "");
       setStartTime(reservation.startTime || "");
-      setEndTime(reservation.endTime || "");
     }
-  }, [isOpen, reservation, date]);
+  }, [isOpen, reservation]);
 
-  const calculateEndTime = (startTime) => {
-    const [hours, minutes, initialPeriod] = startTime.split(/:| /);
-    let startHours = parseInt(hours, 10);
-    let startMinutes = parseInt(minutes, 10);
-    let period = initialPeriod;
-
-    let endHours = startHours + 2;
-    let endMinutes = startMinutes;
-
-    if (endHours >= 12 && period === "AM") {
-      period = "PM";
-      if (endHours > 12) {
-        endHours -= 12;
-      }
-    } else if (endHours >= 12 && period === "PM") {
-      period = "AM";
-      if (endHours > 12) {
-        endHours -= 12;
-      }
+  useEffect(() => {
+    if (isOpen && !reservation) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const options = {
+        timeZone: "America/Toronto",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      };
+      const formattedDate = today
+        .toLocaleDateString(undefined, options)
+        .replace(/\//g, "-");
+      setReservationDate(contextDate || formattedDate);
     }
-
-    if (endHours >= 24) {
-      endHours -= 24;
-      period = "AM";
-    } else if (endHours === 12 && startHours === 12 && period === "AM") {
-      // Special case for 12 AM
-      period = "PM";
-    }
-
-    const formattedEndTime = `${endHours === 0 ? 12 : endHours}:${padZero(
-      endMinutes
-    )} ${period}`;
-    return formattedEndTime;
-  };
+  }, [isOpen, contextDate, reservation]);
 
   const generateTimeOptions = () => {
-    const startTime = 9 * 60; // 9 AM
-    const endTime = 25 * 60 + 30; // 1:30 AM
+    const openingHours = 9 * 60; // 9 AM
+    const closingHours = 25 * 60 + 30; // 1:30 AM
     const interval = 15;
 
     const options = [];
-    for (let time = startTime; time <= endTime; time += interval) {
+    for (let time = openingHours; time <= closingHours; time += interval) {
       let hours = Math.floor(time / 60);
       const minutes = time % 60;
       let period = "AM";
@@ -114,14 +94,13 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
   const handleSave = (e) => {
     e.preventDefault();
     onSave({
-      reservationDate: date,
+      reservationDate,
       name,
       phone,
       email,
       numPeople,
       comments,
       startTime,
-      endTime,
     });
     setName("");
     setPhone("");
@@ -129,7 +108,6 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
     setNumPeople("");
     setComments("");
     setStartTime("");
-    setEndTime("");
     onClose();
   };
 
@@ -189,7 +167,6 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
             value={startTime}
             onChange={(e) => {
               setStartTime(e.target.value);
-              setEndTime(calculateEndTime(e.target.value));
             }}
           >
             <option value="">Select Time</option>

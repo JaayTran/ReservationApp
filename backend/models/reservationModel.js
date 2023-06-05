@@ -14,11 +14,8 @@ const reservationSchema = new mongoose.Schema(
     //   ref: 'Contact',
     //   required: true,
     // },
-
-    // incorporate soon
     reservationDate: { type: Date, required: false },
     startTime: { type: String, required: false },
-    endTime: { type: String, required: false }, //might not need
     numPeople: {
       type: Number,
       required: true,

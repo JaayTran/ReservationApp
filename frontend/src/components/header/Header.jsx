@@ -53,7 +53,6 @@ const Header = () => {
             value={date}
             onChange={handleDateChange}
             dateFormat="yy/mm/dd"
-            showButtonBar={true}
             // minDate={new Date()}
           />
         </div>

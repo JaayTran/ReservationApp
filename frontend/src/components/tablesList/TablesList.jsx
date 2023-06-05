@@ -134,24 +134,30 @@ const TableList = () => {
         <p>{error}</p>
       ) : (
         <div className="pList">
-          {tables.map((table) => (
-            <div className="pListItem" key={table._id}>
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdZRzBL62-pJDUluAgcMC2joOfMh6nNS-Pdg&usqp=CAU"
-                alt=""
-                className="pListImg"
-              />
-              <div className="pListTitles">
-                <h1>Table Number: {table.tableNum}</h1>
-                <h2>Max Capacity: {table.maxCapacity}</h2>
+          {tables
+            .sort((a, b) => {
+              return a.tableNum.localeCompare(b.tableNum);
+            })
+            .map((table) => (
+              <div className="pListItem" key={table._id}>
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdZRzBL62-pJDUluAgcMC2joOfMh6nNS-Pdg&usqp=CAU"
+                  alt=""
+                  className="pListImg"
+                />
+                <div className="pListTitles">
+                  <h1>Table Number: {table.tableNum}</h1>
+                  <h2>Max Capacity: {table.maxCapacity}</h2>
+                </div>
+                <button onClick={() => handleOpenTableModal(table)}>
+                  Edit
+                </button>
+                <button onClick={() => handleDeleteTable(table)}>Delete</button>
+                <button onClick={() => handleOpenReservationModal(table)}>
+                  Add Reservation
+                </button>
               </div>
-              <button onClick={() => handleOpenTableModal(table)}>Edit</button>
-              <button onClick={() => handleDeleteTable(table)}>Delete</button>
-              <button onClick={() => handleOpenReservationModal(table)}>
-                Add Reservation
-              </button>
-            </div>
-          ))}
+            ))}
         </div>
       )}
 
