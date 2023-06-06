@@ -124,10 +124,10 @@ const TableList = () => {
 
   return (
     <div>
-      <h2>Tables List</h2>
-      <button onClick={() => handleOpenTableModal(null)}>Add Table</button>
-
-      {/* Display tables */}
+      <div className="pListHeader">
+        <h2>Tables List</h2>
+        <button onClick={() => handleOpenTableModal(null)}>Add Table</button>
+      </div>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -149,13 +149,17 @@ const TableList = () => {
                   <h1>Table Number: {table.tableNum}</h1>
                   <h2>Max Capacity: {table.maxCapacity}</h2>
                 </div>
-                <button onClick={() => handleOpenTableModal(table)}>
-                  Edit
-                </button>
-                <button onClick={() => handleDeleteTable(table)}>Delete</button>
-                <button onClick={() => handleOpenReservationModal(table)}>
-                  Add Reservation
-                </button>
+                <div>
+                  <button onClick={() => handleOpenTableModal(table)}>
+                    Edit
+                  </button>
+                  <button onClick={() => handleDeleteTable(table)}>
+                    Delete
+                  </button>
+                  <button onClick={() => handleOpenReservationModal(table)}>
+                    Add Reservation
+                  </button>
+                </div>
               </div>
             ))}
         </div>

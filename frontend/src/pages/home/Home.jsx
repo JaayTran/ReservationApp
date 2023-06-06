@@ -22,7 +22,6 @@ const Home = () => {
       )}
       {activeView === "reservations" && (
         <div className="homeContentWrapper">
-          <p>Reservations:</p>
           <ReservationsList />
         </div>
       )}

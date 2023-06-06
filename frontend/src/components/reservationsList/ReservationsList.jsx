@@ -85,57 +85,71 @@ const ReservationList = () => {
     return totalMinutes;
   };
 
+  // Group reservations by date
+  const reservationsByDate = {};
+  reservations.forEach((reservation) => {
+    const reservationDate = format(
+      parseISO(reservation.reservationDate),
+      "yyyy-MM-dd"
+    );
+    if (!reservationsByDate[reservationDate]) {
+      reservationsByDate[reservationDate] = [];
+    }
+    reservationsByDate[reservationDate].push(reservation);
+  });
+
   return (
-    <div className="pList">
+    <div>
+      <h2 className="pListTitles">Reservations:</h2>
       {loading ? (
-        "Loading..."
+        <p>Loading...</p>
       ) : error ? (
-        "An error occurred while fetching reservations. Please try again."
+        <p>{error}</p>
       ) : (
-        <>
-          {reservations
-            .sort((a, b) => {
-              const dateComparison =
-                new Date(a.reservationDate) - new Date(b.reservationDate);
-              if (dateComparison !== 0) {
-                return dateComparison;
-              }
-
-              // Convert the startTime values to minutes
-              const timeA = convertTimeToMinutes(a.startTime);
-              const timeB = convertTimeToMinutes(b.startTime);
-
-              return timeA - timeB;
+        <div>
+          {Object.entries(reservationsByDate)
+            .sort(([dateA], [dateB]) => {
+              return new Date(dateA) - new Date(dateB);
             })
-            .map((reservation) => (
-              <div className="pListItem" key={reservation._id}>
-                <div className="pListTitles">
-                  <h1>
-                    Date:{" "}
-                    {format(
-                      parseISO(reservation.reservationDate),
-                      "yyyy-MM-dd"
-                    )}
-                  </h1>
-                  <h1>Party Size: {reservation.numPeople}</h1>
-                  <h1>Start Time: {reservation.startTime}</h1>
-                  <h1>Name: {reservation.name}</h1>
-                  <h1>Phone: {reservation.phone}</h1>
-                  <h1>Email: {reservation.email}</h1>
-                  <h1>Table Booked: {reservation.tableNumber}</h1>
-                  <h1>Special Notes: {reservation.comments}</h1>
-                </div>
-                <div className="pListActions">
-                  <button onClick={() => handleEditReservation(reservation)}>
-                    Edit
-                  </button>
-                  <button onClick={() => handleDeleteReservation(reservation)}>
-                    Delete
-                  </button>
+            .map(([date, reservations]) => (
+              <div key={date}>
+                <h2 className="pListDate">Date: {date}</h2>
+                <div className="pList">
+                  {reservations
+                    .sort((a, b) => {
+                      const timeA = convertTimeToMinutes(a.startTime);
+                      const timeB = convertTimeToMinutes(b.startTime);
+                      return timeA - timeB;
+                    })
+                    .map((reservation) => (
+                      <div className="pListItem" key={reservation._id}>
+                        <div className="pListTitles">
+                          <h1>Party Size: {reservation.numPeople}</h1>
+                          <h1>Start Time: {reservation.startTime}</h1>
+                          <h1>Name: {reservation.name}</h1>
+                          <h1>Phone: {reservation.phone}</h1>
+                          <h1>Email: {reservation.email}</h1>
+                          <h1>Table Booked: {reservation.tableNumber}</h1>
+                          <h1>Special Notes: {reservation.comments}</h1>
+                        </div>
+                        <div className="pListActions">
+                          <button
+                            onClick={() => handleEditReservation(reservation)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDeleteReservation(reservation)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
             ))}
-        </>
+        </div>
       )}
       <ReservationModal
         isOpen={isModalOpen}
