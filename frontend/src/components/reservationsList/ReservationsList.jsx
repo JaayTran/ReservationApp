@@ -73,6 +73,18 @@ const ReservationList = () => {
     }
   };
 
+  const convertTimeToMinutes = (time) => {
+    const [hours, minutes] = time.split(":");
+    const [rawMinutes, period] = minutes.split(" ");
+    let totalMinutes = parseInt(hours, 10) * 60 + parseInt(rawMinutes, 10);
+
+    if (period === "PM" && hours !== "12") {
+      totalMinutes += 12 * 60; // Add 12 hours for PM times (except 12 PM)
+    }
+
+    return totalMinutes;
+  };
+
   return (
     <div className="pList">
       {loading ? (
@@ -88,7 +100,12 @@ const ReservationList = () => {
               if (dateComparison !== 0) {
                 return dateComparison;
               }
-              return a.startTime.localeCompare(b.startTime);
+
+              // Convert the startTime values to minutes
+              const timeA = convertTimeToMinutes(a.startTime);
+              const timeB = convertTimeToMinutes(b.startTime);
+
+              return timeA - timeB;
             })
             .map((reservation) => (
               <div className="pListItem" key={reservation._id}>

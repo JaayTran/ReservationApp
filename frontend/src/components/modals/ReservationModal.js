@@ -44,7 +44,7 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
 
   const generateTimeOptions = () => {
     const openingHours = 9 * 60; // 9 AM
-    const closingHours = 25 * 60 + 30; // 1:30 AM
+    const closingHours = 21 * 60; // 9 PM
     const interval = 15;
 
     const options = [];
