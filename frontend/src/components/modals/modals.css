@@ -7,33 +7,56 @@
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
-.modal-content {
+.modal form {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
+
+.modal form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  padding-left: 5px;
+}
+
+.modal form .form-group label {
+  text-align: left;
+}
+
+.modal form .form-group input,
+.modal form .form-group textarea,
+.modal form .form-group select {
+  padding: 5px;
+}
+
+.modal form .form-buttons {
+  padding: 10px;
+  display: flex;
   justify-content: space-between;
-  padding-right: 40px; /* Added padding to create space for the close button */
 }
 
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: transparent;
-  color: #000;
+.modal form .form-buttons button {
+  margin: 0 5px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #333;
   border: none;
-  padding: 0;
-  font-size: 24px;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.close:hover {
-  color: #5c5c5c;
+.modal form .form-buttons button:hover {
+  background-color: #555;
 }
 
-.modal-overlay{
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
