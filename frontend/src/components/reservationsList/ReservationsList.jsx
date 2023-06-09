@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-import './reservationList.css';
-import useFetch from '../../hooks/useFetch';
-import ReservationModal from '../modals/ReservationModal';
-import SuccessModal from '../modals/SuccessModal';
-import axios from 'axios';
-import { DateContext } from '../../context/DateContext';
-import format from 'date-fns/format';
-import { parseISO } from 'date-fns';
+import React, { useState, useEffect, useContext } from "react";
+import "./reservationList.css";
+import useFetch from "../../hooks/useFetch";
+import ReservationModal from "../modals/ReservationModal";
+import SuccessModal from "../modals/SuccessModal";
+import axios from "axios";
+import { DateContext } from "../../context/DateContext";
+import format from "date-fns/format";
+import { parseISO } from "date-fns";
 
 const ReservationList = () => {
   const {
@@ -14,7 +14,7 @@ const ReservationList = () => {
     loading,
     error,
     reFetch,
-  } = useFetch('/reservations/');
+  } = useFetch("/reservations/");
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
@@ -30,7 +30,7 @@ const ReservationList = () => {
 
   const handleDeleteReservation = async (reservation) => {
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this reservation?'
+      "Are you sure you want to delete this reservation?"
     );
     if (confirmDelete) {
       try {
@@ -39,7 +39,7 @@ const ReservationList = () => {
           setSuccessModalOpen(true)
         );
       } catch (error) {
-        console.log('An error occurred while deleting the reservation:', error);
+        console.log("An error occurred while deleting the reservation:", error);
       } finally {
         reFetch();
       }
@@ -67,18 +67,18 @@ const ReservationList = () => {
       setSuccessModalOpen(true);
       reFetch();
     } catch (error) {
-      console.log('An error occurred while updating the reservation:', error);
+      console.log("An error occurred while updating the reservation:", error);
     } finally {
       setIsModalOpen(false);
     }
   };
 
   const convertTimeToMinutes = (time) => {
-    const [hours, minutes] = time.split(':');
-    const [rawMinutes, period] = minutes.split(' ');
+    const [hours, minutes] = time.split(":");
+    const [rawMinutes, period] = minutes.split(" ");
     let totalMinutes = parseInt(hours, 10) * 60 + parseInt(rawMinutes, 10);
 
-    if (period === 'PM' && hours !== '12') {
+    if (period === "PM" && hours !== "12") {
       totalMinutes += 12 * 60; // Add 12 hours for PM times (except 12 PM)
     }
 
@@ -90,7 +90,7 @@ const ReservationList = () => {
   reservations.forEach((reservation) => {
     const reservationDate = format(
       parseISO(reservation.reservationDate),
-      'yyyy-MM-dd'
+      "yyyy-MM-dd"
     );
     if (!reservationsByDate[reservationDate]) {
       reservationsByDate[reservationDate] = [];

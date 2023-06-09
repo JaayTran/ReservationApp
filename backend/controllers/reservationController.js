@@ -12,38 +12,69 @@ export const createReservationController = async (req, res, next) => {
     try {
       const table = await TableNumber.findById(tableId);
       if (!table) {
-        // Handle case where table is not found
+        console.log("Table not found"); // Debug statement
         return res.status(404).json({ error: "Table not found" });
       }
 
-      // Update the reservation with the table number
       savedReservation.tableNumber = table.tableNum;
       savedReservation.tableNumberId = table.id;
       await savedReservation.save();
 
-      // Update the table with the reservation ID
       await TableNumber.findByIdAndUpdate(tableId, {
         $push: { reservations: savedReservation._id },
       });
     } catch (err) {
+      console.log("Error updating table or saving reservation:", err); // Debug statement
       next(err);
     }
 
+    console.log("Reservation created successfully:", savedReservation); // Debug statement
     res.status(200).json(savedReservation);
   } catch (err) {
+    console.log("Error creating reservation:", err); // Debug statement
     next(err);
   }
 };
 
 export const updateReservationController = async (req, res, next) => {
   try {
-    const updatedReservation = await Reservation.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    );
-    res.status(200).json(updatedReservation);
+    const reservationId = req.params.id;
+    const newTableNumber = req.body.tableNumber;
+
+    const reservation = await Reservation.findById(reservationId);
+
+    if (!reservation) {
+      console.log("Reservation not found"); // Debug statement
+      return res.status(404).json({ error: "Reservation not found" });
+    }
+
+    const oldTableNumberId = reservation.tableNumberId;
+
+    // Retrieve the newTableNumberId based on the newTableNumber
+    const newTableNumberObj = await TableNumber.findOne({
+      tableNum: newTableNumber,
+    });
+    if (!newTableNumberObj) {
+      console.log("Table number not found"); // Debug statement
+      return res.status(404).json({ error: "Table number not found" });
+    }
+    const newTableNumberId = newTableNumberObj._id;
+
+    reservation.tableNumberId = newTableNumberId;
+
+    await reservation.save();
+
+    await TableNumber.findByIdAndUpdate(oldTableNumberId, {
+      $pull: { reservations: reservationId },
+    });
+    await TableNumber.findByIdAndUpdate(newTableNumberId, {
+      $push: { reservations: reservationId },
+    });
+
+    console.log("Reservation updated successfully:", reservation); // Debug statement
+    res.status(200).json(reservation);
   } catch (err) {
+    console.log("Error updating reservation:", err); // Debug statement
     next(err);
   }
 };
