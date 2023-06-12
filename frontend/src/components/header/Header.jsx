@@ -7,25 +7,24 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
-import { Calendar } from "primereact/calendar";
-import { DateContext } from "../../context/DateContext";
+// import { Calendar } from "primereact/calendar";
+// import { DateContext } from "../../context/DateContext";
 import { ViewContext } from "../../context/ViewContext";
 
 const Header = () => {
-  const [date, setDate] = useState(null);
+  // const [date, setDate] = useState(null);
 
   const { activeView, handleViewChange } = useContext(ViewContext);
-  const { dispatch } = useContext(DateContext);
+  // const { dispatch } = useContext(DateContext);
 
-  const handleDateChange = (e) => {
-    const selectedDate = e.value;
-    setDate(selectedDate);
+  // const handleDateChange = (e) => {
+  //   const selectedDate = e.value;
+  //   setDate(selectedDate);
 
-    if (selectedDate) {
-      console.log("Selected Date:", selectedDate);
-      dispatch({ type: "NEW_DATE", payload: { date: selectedDate } });
-    }
-  };
+  //   if (selectedDate) {
+  //     dispatch({ type: "NEW_DATE", payload: { date: selectedDate } });
+  //   }
+  // };
 
   return (
     <div className="header">
@@ -48,14 +47,14 @@ const Header = () => {
           <FontAwesomeIcon icon={faCalendarDays} />
           <span>Reservation View</span>
         </div>
-        <div className="p-float-label">
+        {/* <div className="p-float-label">
           <Calendar
             value={date}
             onChange={handleDateChange}
             dateFormat="yy/mm/dd"
             // minDate={new Date()}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -165,25 +165,27 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="tableNum">Table Number:</label>
-          <select
-            id="tableNum"
-            value={tableNum}
-            onChange={(e) => setTableNum(e.target.value)}
-          >
-            <option value="">Select Table</option>
-            {tableOptions
-              .sort((a, b) => {
-                return a.number.localeCompare(b.number);
-              })
-              .map((table) => (
-                <option key={table.id} value={table.number}>
-                  {table.number}
-                </option>
-              ))}
-          </select>
-        </div>
+        {reservation && (
+          <div className="form-group">
+            <label htmlFor="tableNum">Table Number:</label>
+            <select
+              id="tableNum"
+              value={tableNum}
+              onChange={(e) => setTableNum(e.target.value)}
+            >
+              <option value="">Select Table</option>
+              {tableOptions
+                .sort((a, b) => {
+                  return a.number.localeCompare(b.number);
+                })
+                .map((table) => (
+                  <option key={table.id} value={table.number}>
+                    {table.number}
+                  </option>
+                ))}
+            </select>
+          </div>
+        )}
         <div className="form-group">
           <label htmlFor="numPeople">Number of People:</label>
           <input

@@ -7,6 +7,7 @@ import axios from "axios";
 import { DateContext } from "../../context/DateContext";
 import format from "date-fns/format";
 import { parseISO } from "date-fns";
+import { Calendar } from "primereact/calendar";
 
 const ReservationList = () => {
   const {
@@ -18,10 +19,48 @@ const ReservationList = () => {
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [filterOption, setFilterOption] = useState("all");
+  const [filterDate, setFilterDate] = useState("");
+  const [filterTable, setFilterTable] = useState("");
+  const [date, setDate] = useState(null);
+  const { dispatch } = useContext(DateContext);
+  const [tableOptions, setTableOptions] = useState([]);
 
   useEffect(() => {
     reFetch();
+    fetchTableData();
   }, []);
+
+  const fetchTableData = async () => {
+    try {
+      const response = await fetch("/tablenumbers");
+      if (response.ok) {
+        const data = await response.json();
+        const options = data.map((table) => ({
+          id: table._id,
+          number: table.tableNum,
+          reservations: table.reservations, // Array of reservation IDs
+        }));
+        setTableOptions(options);
+      } else {
+        console.error("Failed to fetch table data");
+      }
+    } catch (error) {
+      console.error("Error fetching table data:", error);
+    }
+  };
+
+  const handleDateChange = (e) => {
+    const selectedDate = e.value;
+    setDate(selectedDate);
+
+    if (selectedDate) {
+      dispatch({ type: "NEW_DATE", payload: { date: selectedDate } });
+      setFilterDate(format(selectedDate, "yyyy-MM-dd"));
+    } else {
+      setFilterDate(""); // Reset the filter date if no date is selected
+    }
+  };
 
   const handleEditReservation = (reservation) => {
     setSelectedReservation(reservation);
@@ -66,6 +105,7 @@ const ReservationList = () => {
 
       setSuccessModalOpen(true);
       reFetch();
+      fetchTableData();
     } catch (error) {
       console.log("An error occurred while updating the reservation:", error);
     } finally {
@@ -85,9 +125,47 @@ const ReservationList = () => {
     return totalMinutes;
   };
 
+  // Filter reservations based on the selected filter option
+  let filteredReservations = reservations;
+  if (filterOption === "date") {
+    filteredReservations = reservations.filter(
+      (reservation) =>
+        format(parseISO(reservation.reservationDate), "yyyy-MM-dd") ===
+        filterDate
+    );
+  } else if (filterOption === "table") {
+    const selectedTable = tableOptions.find(
+      (table) => table.number === filterTable
+    );
+    if (selectedTable) {
+      filteredReservations = selectedTable.reservations.map((reservationId) => {
+        return reservations.find(
+          (reservation) => reservation._id === reservationId
+        );
+      });
+    }
+  } else if (filterOption === "tableDate") {
+    const selectedTable = tableOptions.find(
+      (table) => table.number === filterTable
+    );
+    if (selectedTable) {
+      filteredReservations = selectedTable.reservations
+        .map((reservationId) =>
+          reservations.find((reservation) => reservation._id === reservationId)
+        )
+        .filter(
+          (reservation) =>
+            format(parseISO(reservation.reservationDate), "yyyy-MM-dd") ===
+            filterDate
+        );
+    } else {
+      filteredReservations = [];
+    }
+  }
+
   // Group reservations by date
   const reservationsByDate = {};
-  reservations.forEach((reservation) => {
+  filteredReservations.forEach((reservation) => {
     const reservationDate = format(
       parseISO(reservation.reservationDate),
       "yyyy-MM-dd"
@@ -103,12 +181,75 @@ const ReservationList = () => {
       <h2 className="pListTitles">Reservations:</h2>
       <div>
         <label>Filter Reservations</label>
-        <select>
+        <select
+          value={filterOption}
+          onChange={(e) => setFilterOption(e.target.value)}
+        >
           <option value="all">All</option>
           <option value="date">All by Date</option>
           <option value="table">Table</option>
-          <option value="table">Table by Date</option>
+          <option value="tableDate">Table by Date</option>
         </select>
+        {filterOption === "date" && (
+          <Calendar
+            value={date}
+            onChange={handleDateChange}
+            dateFormat="yy/mm/dd"
+          />
+        )}
+        {filterOption === "table" && (
+          <div>
+            <label>Table Number:</label>
+            <select
+              value={filterTable}
+              onChange={(e) => setFilterTable(e.target.value)}
+            >
+              <option value="">Select Table</option>
+              {tableOptions
+                .sort((a, b) => {
+                  return a.number.localeCompare(b.number);
+                })
+                .map((table) => (
+                  <option key={table.id} value={table.number}>
+                    {table.number}
+                  </option>
+                ))}
+            </select>
+          </div>
+        )}
+        {filterOption === "tableDate" && (
+          <div>
+            {/* <input
+              type="text"
+              placeholder="Enter table number"
+              value={filterTable}
+              onChange={(e) => setFilterTable(e.target.value)}
+            /> */}
+            <div>
+              <label>Table Number:</label>
+              <select
+                value={filterTable}
+                onChange={(e) => setFilterTable(e.target.value)}
+              >
+                <option value="">Select Table</option>
+                {tableOptions
+                  .sort((a, b) => {
+                    return a.number.localeCompare(b.number);
+                  })
+                  .map((table) => (
+                    <option key={table.id} value={table.number}>
+                      {table.number}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <Calendar
+              value={date}
+              onChange={handleDateChange}
+              dateFormat="yy/mm/dd"
+            />
+          </div>
+        )}
       </div>
       {loading ? (
         <p>Loading...</p>
