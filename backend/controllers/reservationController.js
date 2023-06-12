@@ -39,7 +39,16 @@ export const createReservationController = async (req, res, next) => {
 export const updateReservationController = async (req, res, next) => {
   try {
     const reservationId = req.params.id;
-    const newTableNumber = req.body.tableNumber;
+    const newTableNumber = req.body.tableNum;
+    const {
+      name,
+      phone,
+      email,
+      numPeople,
+      comments,
+      reservationDate,
+      startTime,
+    } = req.body;
 
     const reservation = await Reservation.findById(reservationId);
 
@@ -61,6 +70,14 @@ export const updateReservationController = async (req, res, next) => {
     const newTableNumberId = newTableNumberObj._id;
 
     reservation.tableNumberId = newTableNumberId;
+    reservation.tableNumber = newTableNumber;
+    reservation.name = name;
+    reservation.phone = phone;
+    reservation.email = email;
+    reservation.numPeople = numPeople;
+    reservation.comments = comments;
+    reservation.reservationDate = reservationDate;
+    reservation.startTime = startTime;
 
     await reservation.save();
 

@@ -30,7 +30,7 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
       setName(reservation.name || "");
       setPhone(reservation.phone || "");
       setEmail(reservation.email || "");
-      setTableNum(reservation.tableNum || "");
+      setTableNum(reservation.tableNumber || "");
       setNumPeople(reservation.numPeople || "");
       setComments(reservation.comments || "");
       setStartTime(reservation.startTime || "");
