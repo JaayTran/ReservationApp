@@ -179,17 +179,20 @@ const ReservationList = () => {
   return (
     <div>
       <h2 className="pListTitles">Reservations:</h2>
-      <div>
-        <label>Filter Reservations</label>
-        <select
-          value={filterOption}
-          onChange={(e) => setFilterOption(e.target.value)}
-        >
-          <option value="all">All</option>
-          <option value="date">All by Date</option>
-          <option value="table">Table</option>
-          <option value="tableDate">Table by Date</option>
-        </select>
+      <div className="pListTitles">
+        <div>
+          <label>Filter Reservations</label>
+          <select
+            value={filterOption}
+            onChange={(e) => setFilterOption(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="date">All by Date</option>
+            <option value="table">Table</option>
+            <option value="tableDate">Table by Date</option>
+          </select>
+        </div>
+
         {filterOption === "date" && (
           <Calendar
             value={date}
@@ -274,8 +277,8 @@ const ReservationList = () => {
                     .map((reservation) => (
                       <div className="pListItem" key={reservation._id}>
                         <div className="pListTitles">
-                          <h1>Party Size: {reservation.numPeople}</h1>
                           <h1>Start Time: {reservation.startTime}</h1>
+                          <h1>Party Size: {reservation.numPeople}</h1>
                           <h1>Name: {reservation.name}</h1>
                           <h1>Phone: {reservation.phone}</h1>
                           <h1>Email: {reservation.email}</h1>

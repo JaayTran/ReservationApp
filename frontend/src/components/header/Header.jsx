@@ -1,17 +1,13 @@
 import { faChair, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./header.css";
-import { useContext, useEffect, useState } from "react";
-
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";
-
+import { useContext } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { ViewContext } from "../../context/ViewContext";
-import { Link } from "react-router-dom";
 
 const Header = () => {
   const { activeView, handleViewChange } = useContext(ViewContext);
+  const location = useLocation();
 
   return (
     <div className="header">
@@ -20,7 +16,9 @@ const Header = () => {
           to="/tables"
           onClick={() => handleViewChange("tables")}
           className={`headerListItem ${
-            activeView === "tables" ? "active" : ""
+            location.pathname === "/tables" && activeView === "tables"
+              ? "active"
+              : ""
           }`}
         >
           <FontAwesomeIcon icon={faChair} />
@@ -30,7 +28,10 @@ const Header = () => {
           to="/reservations"
           onClick={() => handleViewChange("reservations")}
           className={`headerListItem ${
-            activeView === "reservations" ? "active" : ""
+            location.pathname === "/reservations" &&
+            activeView === "reservations"
+              ? "active"
+              : ""
           }`}
         >
           <FontAwesomeIcon icon={faCalendarDays} />
