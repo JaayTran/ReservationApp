@@ -1,4 +1,8 @@
-import { faChair, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChair,
+  faCalendarDays,
+  faPowerOff,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./header.css";
 import { useContext } from "react";
@@ -6,8 +10,10 @@ import { useLocation, Link } from "react-router-dom";
 import { ViewContext } from "../../context/ViewContext";
 
 const Header = () => {
-  const { activeView, handleViewChange } = useContext(ViewContext);
+  const { activeView, handleViewChange, adminView } = useContext(ViewContext);
   const location = useLocation();
+
+  const { handleLogout } = useContext(ViewContext);
 
   return (
     <div className="header">
@@ -37,6 +43,11 @@ const Header = () => {
           <FontAwesomeIcon icon={faCalendarDays} />
           <span>Reservation View</span>
         </Link>
+        {adminView && (
+          <div onClick={handleLogout} className="headerListItem">
+            <FontAwesomeIcon icon={faPowerOff} /> <span>Logout Admin View</span>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -23,3 +23,7 @@
   padding: 10px;
   border-radius: 20px;
 }
+
+.headerListItem:hover {
+  color: #747474;
+}

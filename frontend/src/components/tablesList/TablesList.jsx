@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import TableModal from "../modals/TableModal";
 import ReservationModal from "../modals/ReservationModal";
@@ -6,6 +6,7 @@ import SuccessModal from "../modals/SuccessModal";
 import "./tableList.css";
 import useFetch from "../../hooks/useFetch";
 import { DateContext } from "../../context/DateContext";
+import { ViewContext } from "../../context/ViewContext";
 
 const TableList = () => {
   const { data: tables, loading, error, reFetch } = useFetch("/tablenumbers/");
@@ -19,6 +20,8 @@ const TableList = () => {
     maxCapacity: 0,
   });
   const [actionSuccess, setActionSuccess] = useState(false);
+
+  const { adminView } = useContext(ViewContext);
 
   useEffect(() => {
     reFetch();
@@ -79,6 +82,7 @@ const TableList = () => {
     setSelectedTable(table);
     setSelectedReservation(null);
     setReservationModalOpen(true);
+    console.log(adminView);
   };
 
   const handleCloseReservationModal = () => {
@@ -127,7 +131,11 @@ const TableList = () => {
       <div className="pListHeader">
         <h2>Tables List</h2>
         <div className="pListActions">
-          <button onClick={() => handleOpenTableModal(null)}>Add Table</button>
+          {adminView && (
+            <button onClick={() => handleOpenTableModal(null)}>
+              Add Table
+            </button>
+          )}
         </div>
       </div>
       {loading ? (
@@ -151,13 +159,18 @@ const TableList = () => {
                   <h1>Table Number: {table.tableNum}</h1>
                   <h2>Max Capacity: {table.maxCapacity}</h2>
                 </div>
+
                 <div className="pListActions">
-                  <button onClick={() => handleOpenTableModal(table)}>
-                    Edit
-                  </button>
-                  <button onClick={() => handleDeleteTable(table)}>
-                    Delete
-                  </button>
+                  {adminView && (
+                    <div>
+                      <button onClick={() => handleOpenTableModal(table)}>
+                        Edit
+                      </button>
+                      <button onClick={() => handleDeleteTable(table)}>
+                        Delete
+                      </button>
+                    </div>
+                  )}
                   <button onClick={() => handleOpenReservationModal(table)}>
                     Add Reservation
                   </button>
