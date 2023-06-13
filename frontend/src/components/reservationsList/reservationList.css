@@ -17,7 +17,7 @@
 
 .pListItem {
   text-align: center;
-  max-width: 250px;
+  max-width: 300px;
   border-radius: 10px;
   cursor: pointer;
   background-color: #f9f9f9;
@@ -69,4 +69,16 @@
 
 .pListActions button:hover {
   background-color: #555;
+}
+
+.pending {
+  background-color: yellow;
+}
+
+.confirmed {
+  background-color: lightgreen;
+}
+
+.completed {
+  background-color: lightblue;
 }

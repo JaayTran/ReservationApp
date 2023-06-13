@@ -14,6 +14,7 @@ const reservationSchema = new mongoose.Schema(
     //   ref: 'Contact',
     //   required: true,
     // },
+    status: { type: String },
     reservationDate: { type: Date, required: false },
     startTime: { type: String, required: false },
     numPeople: {
