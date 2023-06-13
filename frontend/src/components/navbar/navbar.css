@@ -26,3 +26,10 @@
   cursor: pointer;
   color: #003580;
 }
+
+a {
+  color: #FFF;
+}
+a:hover {
+   color: #00F
+}

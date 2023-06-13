@@ -1,33 +1,8 @@
-import { useContext, useState } from "react";
-import Footer from "../../components/footer/Footer";
-import Header from "../../components/header/Header";
-import Navbar from "../../components/navbar/Navbar";
-import ReservationsList from "../../components/reservationsList/ReservationsList";
-import TablesList from "../../components/tablesList/TablesList";
+import React from "react";
+import { Link, Navigate } from "react-router-dom";
 
-import "./home.css";
-import { ViewContext } from "../../context/ViewContext";
-import { DateContext } from "../../context/DateContext";
-
-const Home = () => {
-  const { activeView } = useContext(ViewContext);
-  return (
-    <div className="homeContainer">
-      <Navbar />
-      <Header />
-      {activeView === "tables" && (
-        <div className="homeContentWrapper">
-          <TablesList />
-        </div>
-      )}
-      {activeView === "reservations" && (
-        <div className="homeContentWrapper">
-          <ReservationsList />
-        </div>
-      )}
-      <Footer />
-    </div>
-  );
-};
+function Home() {
+  return <div>HOME</div>;
+}
 
 export default Home;
