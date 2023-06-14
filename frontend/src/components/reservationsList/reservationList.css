@@ -29,6 +29,17 @@
   height: 200px;
   object-fit: cover;
 }
+.pListItem.seated {
+  background-color: lightgreen;
+}
+
+.pListItem.pending {
+  background-color: yellow;
+}
+
+.pListItem.cancelled {
+  background-color: red;
+}
 
 .pListTitles {
   text-align: center;
@@ -71,14 +82,35 @@
   background-color: #555;
 }
 
-.pending {
-  background-color: yellow;
-}
-
-.confirmed {
+.seatedIndicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
   background-color: lightgreen;
+  margin: 0px 5px;
+  cursor: pointer;
 }
-
-.completed {
-  background-color: lightblue;
+.pendingIndicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: yellow;
+  margin: 0px 5px;
+  cursor: pointer;
+}
+.cancelledIndicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: red;
+  margin: 0px 5px;
+  cursor: pointer;
+}
+.neutralIndicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #f9f9f9;
+  margin: 0px 5px;
+  cursor: pointer;
 }
