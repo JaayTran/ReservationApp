@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./reserveTable.css";
+import { DateContext } from "../../context/DateContext";
+import { Calendar } from "primereact/calendar";
 
 const ReserveTable = () => {
   const [tableData, setTableData] = useState([]);
@@ -22,26 +24,33 @@ const ReserveTable = () => {
   const timeSlots = generateTimeSlots();
 
   return (
-    <div className="reserveTable">
-      <div className="timeSlots">
-        {/* Render time slots along the y-axis */}
-        {timeSlots.map((timeSlot) => (
-          <div key={timeSlot} className="timeSlot">
-            {timeSlot}
-          </div>
-        ))}
+    <div>
+      <div className="calendar">
+        <h2>Choose Your Date:</h2>
+        <Calendar dateFormat="yy/mm/dd" />
       </div>
-      <div className="tableGrid">
-        {/* Render table numbers along the x-axis */}
-        {tableData
-          .sort((a, b) => {
-            return a.tableNum.localeCompare(b.tableNum);
-          })
-          .map((table) => (
-            <div key={table.id} className="tableNumber">
-              {table.tableNum}
+      <div className="reserveTable">
+        <div className="timeSlots">
+          {/* Render time slots along the y-axis */}
+          {timeSlots.map((timeSlot) => (
+            <div key={timeSlot} className="timeSlot">
+              {timeSlot}
             </div>
           ))}
+        </div>
+        <div className="tableCell">test</div>
+        <div className="tableGrid">
+          {/* Render table numbers along the x-axis */}
+          {tableData
+            .sort((a, b) => {
+              return a.tableNum.localeCompare(b.tableNum);
+            })
+            .map((table) => (
+              <div key={table.id} className="tableNumber">
+                {table.tableNum}
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );
