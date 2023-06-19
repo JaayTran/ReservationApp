@@ -5,6 +5,7 @@ import { Calendar } from "primereact/calendar";
 
 const ReserveTable = () => {
   const [tableData, setTableData] = useState([]);
+  const [timeSlots, setTimeSlots] = useState([]);
 
   useEffect(() => {
     // Fetch table data from the database and set it in state
@@ -18,10 +19,33 @@ const ReserveTable = () => {
       }
     };
 
+    // Generate time slots and set in state
+    const generateTimeSlots = () => {
+      const slots = [];
+      let time = new Date().setHours(9, 0, 0, 0); // Set initial time to 9AM
+
+      while (time <= new Date().setHours(21, 0, 0, 0)) {
+        slots.push(formatTime(time));
+        time += 30 * 60 * 1000; // Increment time by 30 minutes
+      }
+
+      return slots;
+    };
+
     fetchTableData();
+    setTimeSlots(generateTimeSlots());
   }, []);
 
-  const timeSlots = generateTimeSlots();
+  const formatTime = (time) => {
+    return new Date(time).toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  const timeSlotCount = timeSlots.length;
+  const tableCount = tableData.length;
 
   return (
     <div>
@@ -30,52 +54,36 @@ const ReserveTable = () => {
         <Calendar dateFormat="yy/mm/dd" />
       </div>
       <div className="reserveTable">
-        <div className="timeSlots">
-          {/* Render time slots along the y-axis */}
+        <div
+          className="timeSlots"
+          style={{
+            gridRowEnd: `span ${timeSlotCount}`,
+          }}
+        >
           {timeSlots.map((timeSlot) => (
             <div key={timeSlot} className="timeSlot">
               {timeSlot}
             </div>
           ))}
         </div>
-        <div className="tableCell">test</div>
-        <div className="tableGrid">
-          {/* Render table numbers along the x-axis */}
-          {tableData
-            .sort((a, b) => {
-              return a.tableNum.localeCompare(b.tableNum);
-            })
-            .map((table) => (
-              <div key={table.id} className="tableNumber">
-                {table.tableNum}
-              </div>
-            ))}
+        <div
+          className="tableNumbers"
+          style={{
+            gridColumnEnd: `span ${tableCount}`,
+          }}
+        >
+          {tableData.map((table) => (
+            <div key={table.id} className="tableNumber">
+              {table.tableNum}
+            </div>
+          ))}
         </div>
+        <div className="reservationCell">test</div>
+        <div className="reservationCell asd">test2</div>
+        <div className="reservationCell asdef">test3</div>
       </div>
     </div>
   );
-};
-
-// Function to generate time slots from 9AM to 9PM in 30 minute increments
-const generateTimeSlots = () => {
-  const timeSlots = [];
-  let time = new Date().setHours(9, 0, 0, 0); // Set initial time to 9AM
-
-  while (time <= new Date().setHours(21, 0, 0, 0)) {
-    timeSlots.push(formatTime(time));
-    time += 30 * 60 * 1000; // Increment time by 30 minutes
-  }
-
-  return timeSlots;
-};
-
-// Function to format time in HH:MM AM/PM format
-const formatTime = (time) => {
-  return new Date(time).toLocaleTimeString([], {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
 };
 
 export default ReserveTable;
