@@ -53,7 +53,10 @@ const ReserveTable = () => {
         <h2>Choose Your Date:</h2>
         <Calendar dateFormat="yy/mm/dd" />
       </div>
-      <div className="reserveTable">
+      <div
+        className="reserveTable"
+        style={{ gridTemplateRows: `repeat(${timeSlotCount}, 50px)` }}
+      >
         <div
           className="timeSlots"
           style={{
