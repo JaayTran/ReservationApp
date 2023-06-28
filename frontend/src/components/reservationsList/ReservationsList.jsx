@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./reservationList.css";
+import "../../pages/reserveTable/reserveTable.css";
 import useFetch from "../../hooks/useFetch";
 import ReservationModal from "../modals/ReservationModal";
 import SuccessModal from "../modals/SuccessModal";
@@ -27,6 +28,48 @@ const ReservationList = () => {
   const { dispatch } = useContext(DateContext);
   const [tableOptions, setTableOptions] = useState([]);
   const [showIndicator, setShowIndicator] = useState("");
+  const [tableData, setTableData] = useState([]);
+  const [timeSlots, setTimeSlots] = useState([]);
+
+  useEffect(() => {
+    // Fetch table data from the database and set it in state
+    const fetchTableData = async () => {
+      try {
+        const response = await fetch("/tablenumbers/");
+        const data = await response.json();
+        setTableData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    // Generate time slots and set in state
+    const generateTimeSlots = () => {
+      const slots = [];
+      let time = new Date().setHours(9, 0, 0, 0); // Set initial time to 9AM
+
+      while (time <= new Date().setHours(21, 0, 0, 0)) {
+        slots.push(formatTime(time));
+        time += 30 * 60 * 1000; // Increment time by 30 minutes
+      }
+
+      return slots;
+    };
+
+    fetchTableData();
+    setTimeSlots(generateTimeSlots());
+  }, []);
+
+  const formatTime = (time) => {
+    return new Date(time).toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  const timeSlotCount = timeSlots.length;
+  const tableCount = tableData.length;
 
   useEffect(() => {
     reFetch();
@@ -211,8 +254,44 @@ const ReservationList = () => {
 
   return (
     <div>
+      <div>
+        <div className="calendar">
+          <h2>Choose Your Date:</h2>
+          <Calendar dateFormat="yy/mm/dd" />
+        </div>
+        <div
+          className="reserveTable"
+          style={{ gridTemplateRows: `repeat(${timeSlotCount}, 50px)` }}
+        >
+          <div
+            className="timeSlots"
+            style={{
+              gridRowEnd: `span ${timeSlotCount}`,
+            }}
+          >
+            {timeSlots.map((timeSlot) => (
+              <div key={timeSlot} className="timeSlot">
+                {timeSlot}
+              </div>
+            ))}
+          </div>
+          <div
+            className="tableNumbers"
+            style={{
+              gridColumnEnd: `span ${tableCount}`,
+            }}
+          >
+            {tableData.map((table) => (
+              <div key={table.id} className="tableNumber">
+                {table.tableNum}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <h2 className="pListTitles">Reservations:</h2>
-      <div className="pListTitles">
+      {/* <div className="pListTitles">
         <div>
           <label>Filter Reservations</label>
           <select
@@ -255,12 +334,12 @@ const ReservationList = () => {
         )}
         {filterOption === "tableDate" && (
           <div>
-            {/* <input
+             <input
               type="text"
               placeholder="Enter table number"
               value={filterTable}
               onChange={(e) => setFilterTable(e.target.value)}
-            /> */}
+            /> ====== commented out for now
             <div>
               <label>Table Number:</label>
               <select
@@ -286,7 +365,12 @@ const ReservationList = () => {
             />
           </div>
         )}
-      </div>
+      </div> */}
+      <Calendar
+        value={date}
+        onChange={handleDateChange}
+        dateFormat="yy/mm/dd"
+      />
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -366,7 +450,6 @@ const ReservationList = () => {
                             </div>
                           )}
                         </div>
-
                         <div className="pListActions">
                           <button
                             onClick={() => handleEditReservation(reservation)}

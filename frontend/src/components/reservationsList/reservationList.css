@@ -34,11 +34,11 @@
 }
 
 .pListItem.pending {
-  background-color: yellow;
+  background-color: rgb(255, 255, 63);
 }
 
 .pListItem.cancelled {
-  background-color: red;
+  background-color: lightcoral;
 }
 
 .pListTitles {
@@ -94,7 +94,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: yellow;
+  background-color: rgb(255, 255, 63);
   margin: 0px 5px;
   cursor: pointer;
 }
