@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
-import "./reservationList.css";
-import "../../pages/reserveTable/reserveTable.css";
-import useFetch from "../../hooks/useFetch";
-import ReservationModal from "../modals/ReservationModal";
-import SuccessModal from "../modals/SuccessModal";
-import axios from "axios";
-import { DateContext } from "../../context/DateContext";
-import format from "date-fns/format";
-import { parseISO } from "date-fns";
-import { Calendar } from "primereact/calendar";
+import React, { useState, useEffect, useContext } from 'react';
+import './reservationList.css';
+import '../../pages/reserveTable/reserveTable.css';
+import useFetch from '../../hooks/useFetch';
+import ReservationModal from '../modals/ReservationModal';
+import SuccessModal from '../modals/SuccessModal';
+import axios from 'axios';
+import { DateContext } from '../../context/DateContext';
+import format from 'date-fns/format';
+import { parseISO } from 'date-fns';
+import { Calendar } from 'primereact/calendar';
 
 const ReservationList = () => {
   const {
@@ -16,18 +16,18 @@ const ReservationList = () => {
     loading,
     error,
     reFetch,
-  } = useFetch("/reservations/");
-  const [status, setStatus] = useState("");
+  } = useFetch('/reservations/');
+  const [status, setStatus] = useState('');
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
-  const [filterOption, setFilterOption] = useState("all");
-  const [filterDate, setFilterDate] = useState("");
-  const [filterTable, setFilterTable] = useState("");
+  const [filterOption, setFilterOption] = useState('date');
+  const [filterDate, setFilterDate] = useState('');
+  const [filterTable, setFilterTable] = useState('');
   const [date, setDate] = useState(null);
   const { dispatch } = useContext(DateContext);
   const [tableOptions, setTableOptions] = useState([]);
-  const [showIndicator, setShowIndicator] = useState("");
+  const [showIndicator, setShowIndicator] = useState('');
   const [tableData, setTableData] = useState([]);
   const [timeSlots, setTimeSlots] = useState([]);
 
@@ -35,7 +35,7 @@ const ReservationList = () => {
     // Fetch table data from the database and set it in state
     const fetchTableData = async () => {
       try {
-        const response = await fetch("/tablenumbers/");
+        const response = await fetch('/tablenumbers/');
         const data = await response.json();
         setTableData(data);
       } catch (error) {
@@ -62,8 +62,8 @@ const ReservationList = () => {
 
   const formatTime = (time) => {
     return new Date(time).toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
+      hour: 'numeric',
+      minute: '2-digit',
       hour12: true,
     });
   };
@@ -78,7 +78,7 @@ const ReservationList = () => {
 
   const fetchTableData = async () => {
     try {
-      const response = await fetch("/tablenumbers");
+      const response = await fetch('/tablenumbers');
       if (response.ok) {
         const data = await response.json();
         const options = data.map((table) => ({
@@ -88,10 +88,10 @@ const ReservationList = () => {
         }));
         setTableOptions(options);
       } else {
-        console.error("Failed to fetch table data");
+        console.error('Failed to fetch table data');
       }
     } catch (error) {
-      console.error("Error fetching table data:", error);
+      console.error('Error fetching table data:', error);
     }
   };
 
@@ -110,7 +110,7 @@ const ReservationList = () => {
       setShowIndicator(false);
       reFetch();
     } catch (error) {
-      console.log("An error occurred while updating the reservation:", error);
+      console.log('An error occurred while updating the reservation:', error);
     }
   };
 
@@ -131,10 +131,10 @@ const ReservationList = () => {
     setDate(selectedDate);
 
     if (selectedDate) {
-      dispatch({ type: "NEW_DATE", payload: { date: selectedDate } });
-      setFilterDate(format(selectedDate, "yyyy-MM-dd"));
+      dispatch({ type: 'NEW_DATE', payload: { date: selectedDate } });
+      setFilterDate(format(selectedDate, 'yyyy-MM-dd'));
     } else {
-      setFilterDate(""); // Reset the filter date if no date is selected
+      setFilterDate(''); // Reset the filter date if no date is selected
     }
   };
 
@@ -145,7 +145,7 @@ const ReservationList = () => {
 
   const handleDeleteReservation = async (reservation) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this reservation?"
+      'Are you sure you want to delete this reservation?'
     );
     if (confirmDelete) {
       try {
@@ -154,7 +154,7 @@ const ReservationList = () => {
           setSuccessModalOpen(true)
         );
       } catch (error) {
-        console.log("An error occurred while deleting the reservation:", error);
+        console.log('An error occurred while deleting the reservation:', error);
       } finally {
         reFetch();
       }
@@ -183,18 +183,18 @@ const ReservationList = () => {
       reFetch();
       fetchTableData();
     } catch (error) {
-      console.log("An error occurred while updating the reservation:", error);
+      console.log('An error occurred while updating the reservation:', error);
     } finally {
       setIsModalOpen(false);
     }
   };
 
   const convertTimeToMinutes = (time) => {
-    const [hours, minutes] = time.split(":");
-    const [rawMinutes, period] = minutes.split(" ");
+    const [hours, minutes] = time.split(':');
+    const [rawMinutes, period] = minutes.split(' ');
     let totalMinutes = parseInt(hours, 10) * 60 + parseInt(rawMinutes, 10);
 
-    if (period === "PM" && hours !== "12") {
+    if (period === 'PM' && hours !== '12') {
       totalMinutes += 12 * 60; // Add 12 hours for PM times (except 12 PM)
     }
 
@@ -203,13 +203,13 @@ const ReservationList = () => {
 
   // Filter reservations based on the selected filter option
   let filteredReservations = reservations;
-  if (filterOption === "date") {
+  if (filterOption === 'date') {
     filteredReservations = reservations.filter(
       (reservation) =>
-        format(parseISO(reservation.reservationDate), "yyyy-MM-dd") ===
+        format(parseISO(reservation.reservationDate), 'yyyy-MM-dd') ===
         filterDate
     );
-  } else if (filterOption === "table") {
+  } else if (filterOption === 'table') {
     const selectedTable = tableOptions.find(
       (table) => table.number === filterTable
     );
@@ -220,7 +220,7 @@ const ReservationList = () => {
         );
       });
     }
-  } else if (filterOption === "tableDate") {
+  } else if (filterOption === 'tableDate') {
     const selectedTable = tableOptions.find(
       (table) => table.number === filterTable
     );
@@ -231,7 +231,7 @@ const ReservationList = () => {
         )
         .filter(
           (reservation) =>
-            format(parseISO(reservation.reservationDate), "yyyy-MM-dd") ===
+            format(parseISO(reservation.reservationDate), 'yyyy-MM-dd') ===
             filterDate
         );
     } else {
@@ -244,7 +244,7 @@ const ReservationList = () => {
   filteredReservations.forEach((reservation) => {
     const reservationDate = format(
       parseISO(reservation.reservationDate),
-      "yyyy-MM-dd"
+      'yyyy-MM-dd'
     );
     if (!reservationsByDate[reservationDate]) {
       reservationsByDate[reservationDate] = [];
@@ -257,7 +257,11 @@ const ReservationList = () => {
       <div>
         <div className="calendar">
           <h2>Choose Your Date:</h2>
-          <Calendar dateFormat="yy/mm/dd" />
+          <Calendar
+            value={date}
+            onChange={handleDateChange}
+            dateFormat="yy/mm/dd"
+          />
         </div>
         <div
           className="reserveTable"
@@ -366,11 +370,7 @@ const ReservationList = () => {
           </div>
         )}
       </div> */}
-      <Calendar
-        value={date}
-        onChange={handleDateChange}
-        dateFormat="yy/mm/dd"
-      />
+
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -420,14 +420,14 @@ const ReservationList = () => {
                                 value={status}
                                 className="seatedIndicator"
                                 onClick={() =>
-                                  handleStatusChange("seated", reservation._id)
+                                  handleStatusChange('seated', reservation._id)
                                 }
                               />
                               <button
                                 value={status}
                                 className="pendingIndicator"
                                 onClick={() =>
-                                  handleStatusChange("pending", reservation._id)
+                                  handleStatusChange('pending', reservation._id)
                                 }
                               />
                               <button
@@ -435,7 +435,7 @@ const ReservationList = () => {
                                 className="cancelledIndicator"
                                 onClick={() =>
                                   handleStatusChange(
-                                    "cancelled",
+                                    'cancelled',
                                     reservation._id
                                   )
                                 }
@@ -444,7 +444,7 @@ const ReservationList = () => {
                                 value={status}
                                 className="neutralIndicator"
                                 onClick={() =>
-                                  handleStatusChange("", reservation._id)
+                                  handleStatusChange('', reservation._id)
                                 }
                               />
                             </div>
