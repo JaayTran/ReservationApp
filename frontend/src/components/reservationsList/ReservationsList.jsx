@@ -21,8 +21,10 @@ const ReservationList = () => {
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
-  const [filterDate, setFilterDate] = useState('');
-  const [date, setDate] = useState(null);
+  const [filterDate, setFilterDate] = useState(
+    format(new Date(), 'yyyy-MM-dd')
+  );
+  const [date, setDate] = useState(new Date());
   const { dispatch } = useContext(DateContext);
   const [tableData, setTableData] = useState([]);
   const [timeSlots, setTimeSlots] = useState([]);
@@ -51,7 +53,7 @@ const ReservationList = () => {
 
       return slots;
     };
-
+    reFetch();
     fetchTableData();
     setTimeSlots(generateTimeSlots());
   }, []);
@@ -63,10 +65,6 @@ const ReservationList = () => {
       hour12: true,
     });
   };
-
-  useEffect(() => {
-    reFetch();
-  }, []);
 
   const handleStatusChange = async (selectedStatus, reservationId) => {
     setStatus(selectedStatus);
