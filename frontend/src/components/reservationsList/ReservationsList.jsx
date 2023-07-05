@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './reservationList.css';
-import '../../pages/reserveTable/reserveTable.css';
 import useFetch from '../../hooks/useFetch';
 import ReservationModal from '../modals/ReservationModal';
 import SuccessModal from '../modals/SuccessModal';
@@ -179,6 +178,7 @@ const ReservationList = () => {
     if (reservation) {
       return (
         <td
+          // rowSpan={8}
           key={`${rowIndex}-${colIndex}`}
           className={`reservation-item ${reservation.status}`}
         >
@@ -242,7 +242,7 @@ const ReservationList = () => {
   };
 
   return (
-    <div>
+    <div className="reservation-list-container">
       <Calendar
         value={date}
         onChange={handleDateChange}

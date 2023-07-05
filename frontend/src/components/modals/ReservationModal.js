@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from "react";
-import Modal from "react-modal";
+import React, { useState, useEffect } from 'react';
+import Modal from 'react-modal';
 
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";
-import { Calendar } from "primereact/calendar";
-import axios from "axios";
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+import { Calendar } from 'primereact/calendar';
+import axios from 'axios';
+import { format } from 'date-fns';
 
-Modal.setAppElement("#root");
+Modal.setAppElement('#root');
 
 const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
-  const [reservationDate, setReservationDate] = useState(null);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [tableNum, setTableNum] = useState("");
-  const [numPeople, setNumPeople] = useState("");
-  const [comments, setComments] = useState("");
-  const [startTime, setStartTime] = useState("");
+  const [reservationDate, setReservationDate] = useState(new Date());
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [tableNum, setTableNum] = useState('');
+  const [numPeople, setNumPeople] = useState('');
+  const [comments, setComments] = useState('');
+  const [startTime, setStartTime] = useState('');
   const [tableOptions, setTableOptions] = useState([]);
 
   useEffect(() => {
@@ -25,15 +26,15 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
       setReservationDate(
         reservation.reservationDate
           ? new Date(reservation.reservationDate)
-          : null
+          : new Date()
       );
-      setName(reservation.name || "");
-      setPhone(reservation.phone || "");
-      setEmail(reservation.email || "");
-      setTableNum(reservation.tableNumber || "");
-      setNumPeople(reservation.numPeople || "");
-      setComments(reservation.comments || "");
-      setStartTime(reservation.startTime || "");
+      setName(reservation.name || '');
+      setPhone(reservation.phone || '');
+      setEmail(reservation.email || '');
+      setTableNum(reservation.tableNumber || '');
+      setNumPeople(reservation.numPeople || '');
+      setComments(reservation.comments || '');
+      setStartTime(reservation.startTime || '');
     }
 
     // Fetch table data from the database and update table options
@@ -43,7 +44,7 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
   const fetchTableData = async () => {
     try {
       // Make an API call to fetch table data from the database
-      const response = await fetch("/tablenumbers"); // Replace with your API endpoint
+      const response = await fetch('/tablenumbers'); // Replace with your API endpoint
 
       if (response.ok) {
         const data = await response.json();
@@ -54,10 +55,10 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
         }));
         setTableOptions(options);
       } else {
-        console.error("Failed to fetch table data");
+        console.error('Failed to fetch table data');
       }
     } catch (error) {
-      console.error("Error fetching table data:", error);
+      console.error('Error fetching table data:', error);
     }
   };
 
@@ -70,17 +71,17 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
     for (let time = openingHours; time <= closingHours; time += interval) {
       let hours = Math.floor(time / 60);
       const minutes = time % 60;
-      let period = "AM";
+      let period = 'AM';
 
       if (hours >= 12) {
         if (hours === 24 && minutes === 0) {
           hours = 12;
-          period = "AM";
+          period = 'AM';
         } else if (hours >= 24) {
           hours -= 24;
-          period = "AM";
+          period = 'AM';
         } else {
-          period = "PM";
+          period = 'PM';
           if (hours > 12) {
             hours -= 12;
           }
@@ -89,7 +90,7 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
 
       if (hours === 0 && minutes === 0) {
         hours = 12;
-        period = "AM";
+        period = 'AM';
       }
 
       const formattedHours = hours === 0 ? 12 : hours;
@@ -105,7 +106,7 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
 
   const padZero = (num) => {
     if (num < 10) {
-      return "0" + num;
+      return '0' + num;
     }
     return num;
   };
@@ -122,20 +123,20 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
       comments,
       startTime,
     });
-    setReservationDate("");
-    setName("");
-    setPhone("");
-    setEmail("");
-    setTableNum("");
-    setNumPeople("");
-    setComments("");
-    setStartTime("");
+    setReservationDate(new Date());
+    setName('');
+    setPhone('');
+    setEmail('');
+    setTableNum('');
+    setNumPeople('');
+    setComments('');
+    setStartTime('');
     onClose();
   };
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} className="modal">
-      <h2>{reservation ? "Edit Reservation" : "Add Reservation"}</h2>
+      <h2>{reservation ? 'Edit Reservation' : 'Add Reservation'}</h2>
       <form onSubmit={handleSave}>
         <div className="form-group">
           <label htmlFor="name">Name:</label>
@@ -212,7 +213,7 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
             onChange={(e) => setReservationDate(e.target.value)}
             dateFormat="yy/mm/dd"
             required
-            // minDate={new Date()}
+            minDate={new Date()}
           />
         </div>
 
@@ -229,7 +230,7 @@ const ReservationModal = ({ isOpen, onClose, onSave, reservation }) => {
           </select>
         </div>
         <div className="form-buttons">
-          <button type="submit">{reservation ? "Save" : "Add"}</button>
+          <button type="submit">{reservation ? 'Save' : 'Add'}</button>
           <button onClick={onClose}>Cancel</button>
         </div>
       </form>
