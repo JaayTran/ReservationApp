@@ -1,22 +1,22 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
-import TableModal from '../modals/TableModal';
-import ReservationModal from '../modals/ReservationModal';
-import SuccessModal from '../modals/SuccessModal';
-import './tableList.css';
-import useFetch from '../../hooks/useFetch';
-import { DateContext } from '../../context/DateContext';
-import { ViewContext } from '../../context/ViewContext';
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import TableModal from "../modals/TableModal";
+import ReservationModal from "../modals/ReservationModal";
+import SuccessModal from "../modals/SuccessModal";
+import "./tableList.css";
+import useFetch from "../../hooks/useFetch";
+import { DateContext } from "../../context/DateContext";
+import { ViewContext } from "../../context/ViewContext";
 
 const TableList = () => {
-  const { data: tables, loading, error, reFetch } = useFetch('/tablenumbers/');
+  const { data: tables, loading, error, reFetch } = useFetch("/tablenumbers/");
 
   const [tableModalOpen, setTableModalOpen] = useState(false);
   const [reservationModalOpen, setReservationModalOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [newTableData, setNewTableData] = useState({
-    tableNum: '',
+    tableNum: "",
     maxCapacity: 0,
   });
   const [actionSuccess, setActionSuccess] = useState(false);
@@ -38,7 +38,7 @@ const TableList = () => {
     } else {
       // If adding a new table, reset the form data to empty values
       setNewTableData({
-        tableNum: '',
+        tableNum: "",
         maxCapacity: 0,
       });
     }
@@ -55,25 +55,25 @@ const TableList = () => {
       if (selectedTable) {
         await axios.put(`/tablenumbers/${selectedTable._id}`, tableData);
       } else {
-        await axios.post('/tablenumbers/', tableData);
+        await axios.post("/tablenumbers/", tableData);
       }
       reFetch();
       handleCloseTableModal();
     } catch (error) {
-      console.log('An error occurred while saving the table:', error);
+      console.log("An error occurred while saving the table:", error);
     }
   };
 
   const handleDeleteTable = async (table) => {
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this table?'
+      "Are you sure you want to delete this table?"
     );
     if (confirmDelete) {
       try {
         await axios.delete(`/tablenumbers/${table._id}`);
         reFetch();
       } catch (error) {
-        console.log('An error occurred while deleting the table:', error);
+        console.log("An error occurred while deleting the table:", error);
       }
     }
   };
@@ -108,7 +108,7 @@ const TableList = () => {
       setActionSuccess(true);
       reFetch();
     } catch (error) {
-      console.log('An error occurred while saving the table:', error);
+      console.log("An error occurred while saving the table:", error);
     }
   };
 
@@ -118,7 +118,7 @@ const TableList = () => {
       reFetch();
       handleCloseReservationModal();
     } catch (error) {
-      console.log('An error occurred while saving the table:', error);
+      console.log("An error occurred while saving the table:", error);
     }
   };
 

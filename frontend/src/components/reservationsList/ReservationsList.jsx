@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
-import './reservationList.css';
-import useFetch from '../../hooks/useFetch';
-import ReservationModal from '../modals/ReservationModal';
-import SuccessModal from '../modals/SuccessModal';
-import axios from 'axios';
-import { DateContext } from '../../context/DateContext';
-import format from 'date-fns/format';
-import { parseISO } from 'date-fns';
-import { Calendar } from 'primereact/calendar';
+import React, { useState, useEffect, useContext } from "react";
+import "./reservationList.css";
+import useFetch from "../../hooks/useFetch";
+import ReservationModal from "../modals/ReservationModal";
+import SuccessModal from "../modals/SuccessModal";
+import axios from "axios";
+import { DateContext } from "../../context/DateContext";
+import format from "date-fns/format";
+import { parseISO } from "date-fns";
+import { Calendar } from "primereact/calendar";
 
 const ReservationList = () => {
   const {
@@ -15,13 +15,13 @@ const ReservationList = () => {
     loading,
     error,
     reFetch,
-  } = useFetch('/reservations/');
-  const [status, setStatus] = useState('');
+  } = useFetch("/reservations/");
+  const [status, setStatus] = useState("");
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [filterDate, setFilterDate] = useState(
-    format(new Date(), 'yyyy-MM-dd')
+    format(new Date(), "yyyy-MM-dd")
   );
   const [date, setDate] = useState(new Date());
   const { dispatch } = useContext(DateContext);
@@ -32,7 +32,7 @@ const ReservationList = () => {
     // Fetch table data from the database and set it in state
     const fetchTableData = async () => {
       try {
-        const response = await fetch('/tablenumbers/');
+        const response = await fetch("/tablenumbers/");
         const data = await response.json();
         setTableData(data);
       } catch (error) {
@@ -59,8 +59,8 @@ const ReservationList = () => {
 
   const formatTime = (time) => {
     return new Date(time).toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: '2-digit',
+      hour: "numeric",
+      minute: "2-digit",
       hour12: true,
     });
   };
@@ -79,7 +79,7 @@ const ReservationList = () => {
       );
       reFetch();
     } catch (error) {
-      console.log('An error occurred while updating the reservation:', error);
+      console.log("An error occurred while updating the reservation:", error);
     }
   };
 
@@ -90,7 +90,7 @@ const ReservationList = () => {
 
   const handleDeleteReservation = async (reservation) => {
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this reservation?'
+      "Are you sure you want to delete this reservation?"
     );
     if (confirmDelete) {
       try {
@@ -99,7 +99,7 @@ const ReservationList = () => {
           setSuccessModalOpen(true)
         );
       } catch (error) {
-        console.log('An error occurred while deleting the reservation:', error);
+        console.log("An error occurred while deleting the reservation:", error);
       } finally {
         reFetch();
       }
@@ -127,7 +127,7 @@ const ReservationList = () => {
       setSuccessModalOpen(true);
       reFetch();
     } catch (error) {
-      console.log('An error occurred while updating the reservation:', error);
+      console.log("An error occurred while updating the reservation:", error);
     } finally {
       setIsModalOpen(false);
     }
@@ -138,10 +138,10 @@ const ReservationList = () => {
     setDate(selectedDate);
 
     if (selectedDate) {
-      dispatch({ type: 'NEW_DATE', payload: { date: selectedDate } });
-      setFilterDate(format(selectedDate, 'yyyy-MM-dd'));
+      dispatch({ type: "NEW_DATE", payload: { date: selectedDate } });
+      setFilterDate(format(selectedDate, "yyyy-MM-dd"));
     } else {
-      setFilterDate(''); // Reset the filter date if no date is selected
+      setFilterDate(""); // Reset the filter date if no date is selected
     }
   };
 
@@ -158,7 +158,7 @@ const ReservationList = () => {
   const filteredReservations = reservations.filter((reservation) => {
     const reservationDate = format(
       parseISO(reservation.reservationDate),
-      'yyyy-MM-dd'
+      "yyyy-MM-dd"
     );
     return reservationDate;
   });
@@ -167,7 +167,7 @@ const ReservationList = () => {
     const timeSlot = timeSlots[rowIndex];
     const tableNumber = tableData[colIndex].tableNum;
     const reservation = filteredReservations.find((r) => {
-      const reservationDate = format(parseISO(r.reservationDate), 'yyyy-MM-dd');
+      const reservationDate = format(parseISO(r.reservationDate), "yyyy-MM-dd");
       return (
         r.tableNumber === tableNumber &&
         reservationDate === filterDate &&
@@ -178,7 +178,7 @@ const ReservationList = () => {
     if (reservation) {
       return (
         <td
-          // rowSpan={8}
+          rowSpan={8}
           key={`${rowIndex}-${colIndex}`}
           className={`reservation-item ${reservation.status}`}
         >
@@ -210,24 +210,24 @@ const ReservationList = () => {
                 <button
                   value={status}
                   className="seatedIndicator"
-                  onClick={() => handleStatusChange('seated', reservation._id)}
+                  onClick={() => handleStatusChange("seated", reservation._id)}
                 />
                 <button
                   value={status}
                   className="pendingIndicator"
-                  onClick={() => handleStatusChange('pending', reservation._id)}
+                  onClick={() => handleStatusChange("pending", reservation._id)}
                 />
                 <button
                   value={status}
                   className="cancelledIndicator"
                   onClick={() =>
-                    handleStatusChange('cancelled', reservation._id)
+                    handleStatusChange("cancelled", reservation._id)
                   }
                 />
                 <button
                   value={status}
                   className="neutralIndicator"
-                  onClick={() => handleStatusChange('', reservation._id)}
+                  onClick={() => handleStatusChange("", reservation._id)}
                 />
               </div>
             )}
