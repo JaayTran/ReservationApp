@@ -47,7 +47,7 @@ const ReservationList = () => {
 
       while (time <= new Date().setHours(21, 0, 0, 0)) {
         slots.push(formatTime(time));
-        time += 15 * 60 * 1000; // Increment time by 15 minutes
+        time += 30 * 60 * 1000; // Increment time by 15 minutes
       }
 
       return slots;
@@ -178,7 +178,7 @@ const ReservationList = () => {
     if (reservation) {
       return (
         <td
-          rowSpan={8}
+          rowSpan={4}
           key={`${rowIndex}-${colIndex}`}
           className={`reservation-item ${reservation.status}`}
         >

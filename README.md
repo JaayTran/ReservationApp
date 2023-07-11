@@ -8,8 +8,9 @@ Jimmy Tran
 
 # Table of Contents
 
-- [Restaurant Reservation Management System](#reservation-app)
+- [Restaurant Reservation Management System](#restaurant-reservation-management-system)
 - [Table of Contents](#table-of-contents)
+- [Media](#media)
 - [Scripts](#scripts)
   - [Running](#running)
 - [Environment Variables](#environment-variables)
@@ -18,7 +19,7 @@ Jimmy Tran
   - [Back-End Dependencies `(Production)`](#back-end-dependencies-production)
     - [Cors](#cors)
     - [Express](#expressjs)
-    - [Date-fns](#datefns)
+    - [Date-fns](#date-fns)
     - [MongoDB](#mongodb)
     - [Mongoose](#mongoose)
   - [Back-End Dependencies `(Development)`](#back-end-dependencies-development)
@@ -36,16 +37,19 @@ Jimmy Tran
     - [Reservation Routes](#reservation-routes)
       - [Create Reservations](#create-reservation)
       - [Get Reservations](#get-reservation)
+      - [Get Reservations](#get-all-reservations)
       - [Update Reservation](#update-reservation)
-      - [Update Reservation Status](#update-reservation)
+      - [Update Reservation Status](#update-reservation-status)
       - [Delete Reservation](#delete-reservation)
     - [Table Routes](#table-routes)
       - [Create Table](#create-table)
-      - [Get Tables](#get-table)
+      - [Get Tables](#get-tables)
       - [Update Table](#update-table)
       - [Delete Table](#delete-table)
     - [Contacts Routes](#contacts-routes)
       - WIP
+
+# Media
 
 # Scripts
 
@@ -123,7 +127,7 @@ Accessible modal dialog component for React.JS. | [View Dependency](https://www.
 
 #### Create Reservation
 
-Reservation Management SystemT `/api/reservations/:tableid`
+POST `/api/reservations/:tableid`
 
 Creates a reservation and appends reservationID to table.
 
@@ -136,135 +140,148 @@ Request body should look like this:
 "email":"joe@email.com",
 "numPeople": 3,
 "comments":"birthday"
+"startTime":"12 PM"
+"reservationDate":"2023-06-02T04:00:00.000Z"
+
 }
 ```
 
 `name`: String, required
 
-`loginNumber`: String, required
+`phone`: String
 
-`pass`: String, required
+`email`: String,
 
-`isAdmin`: Boolean, required
+`numPeople`: Integer, required
 
-Password will be protected in responsee via CryptoJS
+`comments`: String
 
-Response:
+`startTime`: String, required
 
-```
-{
-createdAt: "the date user was registered"
-isAdmin:true
-loginNumber:"1528"
-name:"Admin"
-password: "U2FsdGVkX1932LX4ffxvKk3VJY5xtIlSUZnNSPhEUhY"
-updatedAt: "the date user information was updated"
-__v: 0
-_id: "63e4067d2d1a17c769b0257a"
-}
-```
-
-#### Login Employee
-
-Reservation Management SystemT `/api/users/login`
-
-Logs an existing user into the application.
-
-Request body should look like this:
-
-```
-{
-  "loginNumber": "123",
-  "password": "123"
-}
-```
-
-`loginNumber`: String, required
-
-`password`: String, required
-
-Password will be protected in responsee via CryptoJS
+`reservationDate`: Date, required
 
 Response:
 
 ```
-{
-createdAt: "the date user was registered"
-isAdmin:true
-loginNumber:"1528"
-name:"Admin"
-password: "U2FsdGVkX1932LX4ffxvKk3VJY5xtIlSUZnNSPhEUhY"
-updatedAt: "the date user information was updated"
-__v: 0
-_id: "63e4067d2d1a17c769b0257a"
-}
-```
-
-#### Get Users
-
-GET `/api/users/getusers`
-
-**Requires:** Authorization
-
-Retrieves a list of employees from the database. Admins can see all employees in the restaurant, managers can see only servers.
-
-Response:
-
-```
-{
-  "users": [
     {
-        "_id": "63e4067d2d1a17c769b0257a",
-        "name": "Admin",
-        "password": "U2FsdGVkX1932LX4ffxvKk3VJY5xtIlSUZnNSPhEUhY",
-        "createdAt": "the date user was registered",
-        "updatedAt": "the date user was updated",
+        "_id": "6487814e5b8219e33d37d882",
+        "tableNumber": "1",
+        "phone":"123-123-1234",
+        "email":"joe@email.com",
+        "reservationDate": "2023-06-02T04:00:00.000Z",
+        "startTime":"12 PM"
+        "numPeople": 3,
+        "comments":"birthday"
+        "createdAt": "2023-06-12T20:34:22.921Z",
+        "updatedAt": "2023-07-04T18:06:22.507Z",
         "__v": 0,
-        "loginNumber": "1",
-        "isAdmin": true
-    },
-    {
-        "_id": "63e40fa28ec0c7005c4412f2",
-        "name": "User",
-        "password": "O2ssdGVkX1932LX4ffxvKk3VJY5xX1932LX4ffxvUwZ",
-        "isAdmin": false,
-        "createdAt": "the date user was registered",
-        "updatedAt": "the date user was updated",
-        "__v": 0,
-        "loginNumber": "2"
+        "tableNumberId": "64877e9f5b8219e33d37d85b",
+        "status": "pending"
     }
-]
-}
 ```
 
-#### Update Employee
+#### Get Reservation
 
-PUT `/api/users/updateuser`
+GET `/api/reservations/:id`
 
-**Requires:** Authorization
+Gets specific reservation in the database.
 
-Changes the name, login number, password or admin permission for the user. only a current admin can access user page.
+Response:
+
+```
+{
+        "_id": "6487814e5b8219e33d37d882",
+        "tableNumber": "1",
+        "name": "2",
+        "phone": "",
+        "email": "",
+        "reservationDate": "2023-06-02T04:00:00.000Z",
+        "startTime": "9:15 AM",
+        "numPeople": 2,
+        "comments": "",
+        "createdAt": "2023-06-12T20:34:22.921Z",
+        "updatedAt": "2023-07-04T18:06:22.507Z",
+        "__v": 0,
+        "tableNumberId": "64877e9f5b8219e33d37d85b",
+        "status": "pending"
+}
+
+```
+
+#### Get All Reservations
+
+GET `/api/reservations`
+
+Gets all reservations in the database.
+
+Response:
+
+```
+{
+        "_id": "6487814e5b8219e33d37d882",
+        "tableNumber": "1",
+        "name": "2",
+        "phone": "",
+        "email": "",
+        "reservationDate": "2023-06-02T04:00:00.000Z",
+        "startTime": "9:15 AM",
+        "numPeople": 2,
+        "comments": "",
+        "createdAt": "2023-06-12T20:34:22.921Z",
+        "updatedAt": "2023-07-04T18:06:22.507Z",
+        "__v": 0,
+        "tableNumberId": "64877e9f5b8219e33d37d85b",
+        "status": "pending"
+},
+...
+
+
+```
+
+#### Update Reservation
+
+PUT `/api/reservations/:id`
+
+Updates specific reservation in the database.
 
 Request body should look like this:
 
 ```
 {
-  "name": "New Name",
-  "loginNumber": "1234",
-  "password": "New Password"
-  "isAdmin": "true or false"
+        "tableNumber": "NEW data",
+        "name": "old data",
+        "phone": "old data",
+        "email": "old data",
+        "reservationDate": "NEW data",
+        "startTime": "old data",
+        "numPeople": old data,
+        "comments": "old data",
+        "status": "old data"
 }
 ```
 
-`name`: String, optional
+field would be filled with current data, and updated fields would be filled with new data.
 
-`loginNumber`: String, optional
+Response:
 
-`password`: String, optional,
-
-`isAdmin`: String, optional
-
-Everything is optional because it is not required to update a user.
+```
+{
+        "_id": "old data",
+        "tableNumber": "NEW data",
+        "name": "old data",
+        "phone": "old data",
+        "email": "old data",
+        "reservationDate": "NEW data",
+        "startTime": "old data",
+        "numPeople": old data,
+        "comments": "old data",
+        "createdAt": "old data",
+        "updatedAt": "old data",
+        "__v": 0,
+        "tableNumberId": "old data",
+        "status": "old data"
+}
+```
 
 Response will be a success message.
 
@@ -272,17 +289,43 @@ Response:
 
 ```
 {
-  "msg": "User updated successfully!"
+  "msg": "Reservation updated successfully!"
 }
 ```
 
-#### Delete User
+#### Update Reservation Status
 
-DELETE `/api/users/deleteuser/`
+PUT `/api/reservations/status/:id`
 
-**Requires:** Authorization
+Changes status of reservation to either "pending", "seated", "cancelled", or "complete".
 
-Deletes an employee from the database. Only admins can access the users page.
+Request body should look like this:
+
+```
+{
+  "status": "seated"
+}
+```
+
+`status`: String, can be either "pending", "seated", "cancelled", or "complete"
+
+Everything is optional because it defaults to "pending" if no status is provided.
+
+Response will be a success message.
+
+Response:
+
+```
+{
+  "msg": "status updated successfully!"
+}
+```
+
+#### Delete Reservation
+
+DELETE `/api/reservations/:id/:tableid`
+
+Deletes an reservation from the database. Also deletes reservation id stored in the Table's reservations array.
 
 Response includes a success message.
 
@@ -290,216 +333,15 @@ Response:
 
 ```
 {
-  "msg": "User deleted successfully"
-}
-```
-
-#### Employee Logout
-
-GET `/api/users/logout`
-
-removes authorization token from local storage, prohibitting any access to pos system unless authorized credentials are entered.
-
-### Item Routes
-
-#### Add Item
-
-Reservation Management SystemT `/api/products/addproducts`
-
-**Requires:** Authorization
-
-Adds a new food item to the database. Only admins can view products page.
-
-Request body should look like this:
-
-```
-{
-  "name": "Spring Rolls",
-  "category": "Appetizers",
-  "price": "4.50",
-}
-```
-
-`name`: String, required, must be unique
-
-`price`: Number, required
-
-`category`: String, optional
-
-Response includes the added item's:
-
-- name
-- category
-- price
-
-Response:
-
-```
-{
-    "_id": "63d95b2fc9fa35bc2bb12841",
-    "name": "Spring Rolls",
-    "category": "Appetizers",
-    "price": 4.5,
-    "modifier": [],
-    "createdAt": "date item was created",
-    "updatedAt": "date item was updated last",
-    "__v": 0
-},
-  "msg": "Product Added Successfully!"
-}
-```
-
-#### Get All Items
-
-GET `/api/products/getproducts`
-
-Retrieves all of the food items from the database.
-
-Each element in the response array includes and item's:
-
-- name
-- category
-- price
-
-Response:
-
-```
-{
-  "items": [
-    {
-    "_id": "63d95b2fc9fa35bc2bb12841",
-    "name": "Spring Rolls",
-    "category": "Appetizers",
-    "price": 4.5,
-    "modifier": [],
-    "createdAt": "date item was created",
-    "updatedAt": "date item was updated last",
-    "__v": 0
-    },
-    {
-    "_id": "63d95c51c9fa35bc2bb1284c",
-    "name": "Fries",
-    "category": "Appetizers",
-    "price": 3.5,
-    "modifier": [],
-    "createdAt": "date item was created",
-    "updatedAt": "date item was updated last",
-    "__v": 0
-    },
-	.....
-  ]
-}
-```
-
-#### Update Item
-
-PUT `/api/products/updateproducts`
-
-**Requires:** Authorization
-
-Updates information for an existing food item. Only admins can view products page.
-
-Modal will open up with all of products information and will overwrite product with any changed information.
-
-pre updated item
-
-```
-{
-    "_id": "63d95c51c9fa35bc2bb1284c",
-    "name": "Fries",
-    "category": "Appetizers",
-    "price": 3.5,
-    "modifier": [],
-    "createdAt": "date item was created",
-    "updatedAt": "date item was updated last",
-    "__v": 0
-}
-```
-
-inputting new item detail (price in this case)
-
-```
-{
-    "_id": "63d95c51c9fa35bc2bb1284c",
-    "name": "Fries",
-    "category": "Appetizers",
-    "price": 4.5,
-    "modifier": [],
-    "createdAt": "date item was created",
-    "updatedAt": "date item was updated last",
-    "__v": 0
-}
-```
-
-`name`: String
-
-`price`: Number
-
-`category`: String
-
-You only need one field!
-
-Response includes the updated item's:
-
-- name
-- price
-- category
-
-Response:
-
-```
-{
-    "_id": "63d95c51c9fa35bc2bb1284c",
-    "name": "Fries",
-    "category": "Appetizers",
-    "price": 4.5,
-    "modifier": [],
-    "createdAt": "date item was created",
-    "updatedAt": "date item was updated last",
-    "__v": 0
-}
-```
-
-#### Delete Item
-
-DELETE `/api/products/deleteproducts/`
-
-**Requires:** Authorization
-
-Deletes an item from the database. Only admins can view the products page.
-
-Response includes a success message and the deleted item's:
-
-- name
-- price
-- category
-- description
-
-Response:
-
-```
-{
-    "_id": "63d95c51c9fa35bc2bb1284c",
-    "name": "Fries",
-    "category": "Appetizers",
-    "price": 3.5,
-    "modifier": [],
-    "createdAt": "date item was created",
-    "updatedAt": "date item was updated last",
-    "__v": 0
-}
-  },
-  "msg": "Product Deleted Successfully!"
+  "msg": "Reservation deleted successfully"
 }
 ```
 
 ### Table Routes
 
-#### Add Table
+#### Create Table
 
-Reservation Management SystemT `/api/tables/addtables`
-
-**Requires:** Authorization
+POST `/api/tablenumbers/`
 
 Adds a new table to the database
 
@@ -508,33 +350,34 @@ Request body should look like this:
 ```
 {
   "tableNum": "A11"
+  "maxCapacity": 4
 }
 ```
 
-`number`: Number, required
+`tableNum`: String, required
 
-Response includes the added item's:
-
-- Table number
+`maxCapacity`: Number, required
 
 Response:
 
 ```
-  "tables": [
-    {
-      "_id": "5ba6c6860c6f7f7f7e859dc6",
-      "tableNum": 1,
-      "__v": 0
-	  "createdAt": "date item was created",
-	  "updatedAt": "date item was updated last",
-    }
-  ],
+{
+  {
+  "_id": "5ba6c6860c6f7f7f7e859dc6",
+  "tableNum": 1,
+  "__v": 0
+	"createdAt": "date item was created",
+	"updatedAt": "date item was updated last",
+  },
+  {
   "msg": "Table added successfully
+  }
+}
 ```
 
-#### Get All Tables
+#### Get Tables
 
-GET`/api/tables/gettables`
+GET`/api/tablenumbers/`
 
 **Requires:** Authorization
 
@@ -543,43 +386,40 @@ Get all tables.
 Response:
 
 ```
-{
-  "tables": {
-    "id": "5ba6c19f0c6f7f7f7e859dc4",
-    "number": 1,
-    "__v": 0
-	"createdAt": "date item was created",
-    "updatedAt": "date item was updated last",
-  },
-  {
-    "id": "5ba6d19f0c6f7f7f7e859db4",
-    "number": 1,
-    "__v": 0
-	"createdAt": "date item was created",
-    "updatedAt": "date item was updated last",
-  },
-  ...
-}
+    {
+        "_id": "64877e9f5b8219e33d37d85b",
+        "tableNum": "1",
+        "maxCapacity": 1,
+        "reservations": [
+            "6487814e5b8219e33d37d882",
+            "6488852444fa29fac1b709d3",
+            "64906a9f23059e465420a0ce",
+            "64907f0923059e465420a1ea",
+            "6490c9b723059e465420a30b",
+            "649c52aa6bc3642ae8da604f",
+            "64a469edf35261c74847dca3",
+            "64a5a82f8b3bb267caf81c21"
+        ],
+        "unavailableDates": [],
+        "createdAt": "2023-06-12T20:22:55.894Z",
+        "updatedAt": "2023-07-06T23:20:50.107Z",
+        "__v": 0
+    },
+    ...
 ```
 
-#### Update Tables
+#### Update Table
 
-Reservation Management SystemT `api/tables/update`
-
-**Requires:** Authorization
-
-Updates all the tables in array in the request body.
+PUT `api/tablenumbers/:id`
 
 Request body should look like this:
 
 ```
 
 {
-	"_id": "5bb91ad8d5461a87502efc83",
-	"tableNum": "A11"
-	"__v": 0
-	"createdAt": "date item was created",
-	"updatedAt": "date item was updated last",
+
+	"tableNum": "old Data",
+  "maxCapacity": "new Data",
 }
 ```
 
@@ -592,102 +432,33 @@ Response:
 ```
 {
 	"_id": "5bb91ad8d5461a87502efc83",
-	"tableNum": A11,
+	"tableNum": "old Data",
+  "maxCapacity": "new Data",
 	"__v": 0
-	"createdAt": "date item was created",
-	"updatedAt": "date item was updated last",
-
+	"createdAt": "date table was created",
+	"updatedAt": "date table was updated last",
+},
+{
+  "msg": "Table updated successfully"
 }
 ```
 
 #### Delete Table
 
-Delete `api/tables/deletetables`
+DELETE `api/tablenumbers/:id`
 
 **Requires:** Authorization
 
-Deletes a table by its ID. The ID will be pulled off of the request parameters. No request body is required for this route. Only admins can view tables page.
+Deletes a table by its ID. All reservations inside the reservations array will also be deleted.
 
 Response:
 
 ```
 {
-  "tables": [
-    {
-      "_id": "5ba6c6860c6f7f7f7e859dc6",
-      "tableNum": 1,
-      "__v": 0
-	  "createdAt": "date item was created",
-	  "updatedAt": "date item was updated last",
-    }
-  ],
-  "msg": "Table deleted successfully
-```
-
-### Bill Routes
-
-#### Add Bill
-
-Reservation Management SystemT `api/bills/addbills`
-
-Adds a new bill to the database
-
-Request body should look like this:
-
-```
-{
-	"_id": "5bb91ad8d5461a87502efc83",
-	"bills": [...]
-	"__v": 0
-	"createdAt": "date item was created",
-	"updatedAt": "date item was updated last",
+  "msg": "Table deleted successfully"
 }
 ```
 
-`bills`: Array of Objects with items in bill.
+### Contacts Routes
 
-Response includes the added items as an Array labelled cartItems:
-
-Response:
-
-```
-{
-_id: 63d95f62c9fa35bc2bb12886
-tableNumber : "12"
-subTotal : 77
-totalAmount : 87.01
-tax : 10.01
-paymentMethod : "cash"
-cartItems: Array
-createdAt : 2023-01-31T18:35:14.220+00:00
-updatedAt : 2023-01-31T18:35:14.220+00:00
-__v : 0
-},
-msg: "Bill Created Successfully
-```
-
-#### Get Bills
-
-get `api/bills/getbills`
-
-Response:
-
-```
-{
-_id: 63d95f62c9fa35bc2bb12886
-tableNumber : "12"
-subTotal : 77
-totalAmount : 87.01
-tax : 10.01
-paymentMethod : "cash"
-cartItems: Array
-createdAt : 2023-01-31T18:35:14.220+00:00
-updatedAt : 2023-01-31T18:35:14.220+00:00
-__v : 0
-},
-{
-...
-},
-...
-
-```
+Implementing in future.
