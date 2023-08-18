@@ -52,7 +52,7 @@ Jimmy Tran
 # Media
 
 ![Tables](https://github.com/JaayTran/ReservationApp/assets/38023521/a1287ebe-7d26-4b75-b9d3-1671f50ac2fb)
-![Reservations](https://github.com/JaayTran/ReservationApp/assets/38023521/5d3caf22-444b-499e-bc55-13008c318ad5)
+![Reservations](https://github.com/JaayTran/ReservationApp/assets/38023521/f123879f-24e6-477e-84a8-51eca3954910)
 ![EditReservation](https://github.com/JaayTran/ReservationApp/assets/38023521/ed4d43fb-840b-4a08-9804-d999acc41afc)
 
 # Scripts
